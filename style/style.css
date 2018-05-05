@@ -72,6 +72,37 @@
   text-align: center;
   font-style: italic; }
 
+.game-screen {
+  display: block;
+  max-width: 600px;
+  margin: 40px auto 0 auto; }
+
+.game-screen_status {
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  color: #FFE81F;
+  text-align: center;
+  font-weight: bolder; }
+
+.game-screen_board {
+  margin: 40px 0; }
+
+.board_row_field {
+  display: inline-block;
+  width: 31%;
+  height: 200px;
+  margin: 5px;
+  border: 5px solid #FFE81F;
+  box-sizing: border-box;
+  cursor: pointer; }
+
+.board_row_field:hover {
+  border-color: #FB5607; }
+
+.field_item {
+  width: 100%;
+  height: 100%; }
+
 @media screen and (min-width: 576px) {
   .header_title {
     font-family: "distant galaxy", cursive;
