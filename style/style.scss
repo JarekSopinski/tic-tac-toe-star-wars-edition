@@ -1,7 +1,15 @@
+// This stylesheet is written according to BEM convention.
+
 // COLORS:
 
 $ligth-side-blue: #076EB0;
 $dark-side-red: #9D2B21;
+$sw-title-yellow: #FFE81F;
+
+// FONTS
+
+$title-font: "distant galaxy", cursive;
+$normal-font: 'Montserrat', sans-serif;
 
 @font-face {
   font-family: "distant galaxy";
@@ -9,4 +17,43 @@ $dark-side-red: #9D2B21;
   font-weight: normal;
   font-style: normal;
 }
+
+@mixin text($font, $size, $color) {
+  font-family: $font;
+  font-size: $size;
+  color: $color;
+  text-align: center;
+};
+
+.body {
+  background-image: url("../img/stars-bg.jpg");
+}
+
+.header {
+  margin: 20px auto 0 auto;
+}
+
+.header_title {
+  @include text($title-font, 50px, $sw-title-yellow);
+  text-transform: uppercase;
+}
+
+.header_title--subtitle {
+  @include  text($title-font, 30px, $sw-title-yellow);
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 576px) {
+
+  .header_title {
+    @include text($title-font, 80px, $sw-title-yellow);
+  }
+
+  .header_title--subtitle {
+    @include  text($title-font, 40px, $sw-title-yellow);
+  }
+
+}
+
+
 

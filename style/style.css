@@ -3,5 +3,37 @@
   src: url("../fonts/distant-galaxy.woff") format("woff");
   font-weight: normal;
   font-style: normal; }
+.body {
+  background-image: url("../img/stars-bg.jpg"); }
+
+.header {
+  margin: 20px auto 0 auto; }
+
+.header_title {
+  font-family: "distant galaxy", cursive;
+  font-size: 50px;
+  color: #FFE81F;
+  text-align: center;
+  text-transform: uppercase; }
+
+.header_title--subtitle {
+  font-family: "distant galaxy", cursive;
+  font-size: 30px;
+  color: #FFE81F;
+  text-align: center;
+  text-transform: uppercase; }
+
+@media screen and (min-width: 576px) {
+  .header_title {
+    font-family: "distant galaxy", cursive;
+    font-size: 80px;
+    color: #FFE81F;
+    text-align: center; }
+
+  .header_title--subtitle {
+    font-family: "distant galaxy", cursive;
+    font-size: 40px;
+    color: #FFE81F;
+    text-align: center; } }
 
 /*# sourceMappingURL=style.css.map */
