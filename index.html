@@ -16,21 +16,33 @@
     <h2 class="header_title--subtitle">Star Wars Edition</h2>
 </header>
 
-<div class="settings">
+<div id="js-settings"
+     class="settings">
+
     <h3 class="settings_title">Are you a Jedi or a Sith?</h3>
 
     <div class="settings_container">
-        <img src="img/luke.png" class="settings_container_img">
+        <img src="img/luke.png"
+             id="js-choose-cross"
+             class="settings_container_img">
         <p class="settings_container_quote">I'm a Jedi, like my father before me!</p>
+        <p class="settings_container_hint">(play as a cross)</p>
     </div>
 
     <div class="settings_container">
-        <img src="img/emperor" class="settings_container_img">
+        <img src="img/emperor"
+             id="js-choose-circle"
+             class="settings_container_img">
         <p class="settings_container_quote">Power, unlimited power!</p>
+        <p class="settings_container_hint">(play as a circle)</p>
     </div>
 
 </div>
 
+<div id="js-board"
+     class="board hidden">
+
+</div>
 
 <script src="external/jquery-3.3.1.min.js"></script>
 <script src="js/script.js"></script>
