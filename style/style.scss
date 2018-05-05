@@ -3,7 +3,10 @@
 $ligth-side-blue: #076EB0;
 $dark-side-red: #9D2B21;
 
-body {
-  background-color: $dark-side-red;
+@font-face {
+  font-family: "distant galaxy";
+  src: url("../fonts/distant-galaxy.woff") format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 

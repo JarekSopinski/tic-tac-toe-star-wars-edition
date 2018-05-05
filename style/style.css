@@ -1,4 +1,7 @@
-body {
-  background-color: #9D2B21; }
+@font-face {
+  font-family: "distant galaxy";
+  src: url("../fonts/distant-galaxy.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
 
 /*# sourceMappingURL=style.css.map */
