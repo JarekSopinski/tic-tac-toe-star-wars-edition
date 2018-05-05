@@ -5,6 +5,9 @@
 $ligth-side-blue: #076EB0;
 $dark-side-red: #9D2B21;
 $sw-title-yellow: #FFE81F;
+$highlight-orange: #FB5607;
+$grey: #787878;
+$grey-opacity: rgba(120,120,120,0.7);
 
 // FONTS
 
@@ -39,9 +42,50 @@ $normal-font: 'Montserrat', sans-serif;
 }
 
 .header_title--subtitle {
-  @include  text($title-font, 30px, $sw-title-yellow);
+  @include text($title-font, 30px, $sw-title-yellow);
   text-transform: uppercase;
 }
+
+.settings {
+  display: block;
+  max-width: 300px;
+  margin: 40px auto 0 auto;
+  padding: 0 20px;
+  background-color: $grey-opacity;
+  border: 5px solid $sw-title-yellow;
+  border-radius: 20px;
+}
+
+.settings_title {
+  margin-top: 20px;
+  @include text($normal-font, 25px, $sw-title-yellow);
+  font-weight: bolder;
+}
+
+.settings_container {
+  margin: 40px 0;
+  cursor: pointer;
+}
+
+.settings_container_img {
+  display: block;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  border: 5px solid $sw-title-yellow;
+  border-radius: 100%;
+}
+
+.settings_container_img:hover {
+  border-color: $highlight-orange;
+}
+
+.settings_container_quote {
+  margin-top: 10px;
+  @include text($normal-font, 15px, $sw-title-yellow);
+  font-style: italic;
+}
+
 
 @media screen and (min-width: 576px) {
 
