@@ -44,7 +44,7 @@ const initialBoardState = {
 
 // ************** GAME MECHANICS ****************** //
 
-const startGame = (playerSign) => {
+const startGame = playerSign => {
 
     gameState = $.extend(true, {}, initialGameState);
     // TODO: after restarting keep signs settings from previous game;
@@ -59,11 +59,26 @@ const startGame = (playerSign) => {
 
 };
 
+const handlePlayerMove = field => {
+
+    const playerSign = gameState.playerSign;
+
+    boardState[field] = playerSign; // checking field as marked by player
+    displaySign(playerSign, field); // rendering image inside field
+
+};
+
+// ************** HELPER FUNCTIONS ****************** //
+
+const displaySign = (sign, field) => {
+
+};
+
 // ************** EVENT LISTENERS ****************** //
 
-const handleSettingsClick = (playerSign) => {
+const handleSettingsClick = playerSign => {
 
-    // hide settings screen and show game board
+    // hide settings screen and show game board:
     settingsScreen.toggleClass("hidden");
     gameScreen.toggleClass("hidden");
 
@@ -71,10 +86,9 @@ const handleSettingsClick = (playerSign) => {
 
 };
 
-const handleFieldClick = (field) => {
-
-    console.log(field);
-
+const handleFieldClick = field => {
+    // check if field is empty - if so, execute player's move:
+    if (!boardState[field]) { handlePlayerMove(field) }
 };
 
 $(document).ready(() => {
