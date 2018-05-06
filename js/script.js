@@ -4,12 +4,29 @@ const chooseCircle = $("#js-choose-circle");
 
 const gameScreen = $("#js-game-screen");
 
-let state = {};
+let gameState = {};
+let boardState = {};
 
-const initialState = {
+const initialGameState = {
 
     playerSign: null,
-    computerSign: null
+    computerSign: null,
+
+};
+
+const initialBoardState = {
+
+    a1: null,
+    a2: null,
+    a3: null,
+
+    b1: null,
+    b2: null,
+    b3: null,
+
+    c1: null,
+    c2: null,
+    c3: null
 
 };
 
@@ -17,14 +34,16 @@ const initialState = {
 
 const startGame = (playerSign) => {
 
-    state = $.extend(true, {}, initialState);
+    gameState = $.extend(true, {}, initialGameState);
     // TODO: after restarting keep signs settings from previous game;
+    boardState = $.extend(true, {}, initialBoardState);
 
     // set signs for player and computer
-    state.playerSign = playerSign;
-    state.playerSign === "cross" ? state.computerSign = "circle" : state.computerSign = "cross";
+    gameState.playerSign = playerSign;
+    gameState.playerSign === "cross" ? gameState.computerSign = "circle" : gameState.computerSign = "cross";
 
     // TODO: deciding who starts the game also should be handled here
+    // TODO: add a callback for setting hidden class for all items after restart
 
 };
 
