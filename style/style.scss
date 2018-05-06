@@ -100,9 +100,15 @@ $normal-font: 'Montserrat', sans-serif;
   margin: 40px auto 0 auto;
 }
 
-.game-screen_status {
-  @include text($normal-font, 30px, $sw-title-yellow);
+.status_text--quote {
+  margin-bottom: 5px;
+  @include text($normal-font, 25px, $sw-title-yellow);
   font-weight: bolder;
+  font-style: italic;
+}
+
+.status_text--hint {
+  @include text($normal-font, 20px, $sw-title-yellow);
 }
 
 .game-screen_board {

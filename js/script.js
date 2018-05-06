@@ -1,8 +1,10 @@
-const settingsScreen = $("#js-settings-screen");
-const gameScreen = $("#js-game-screen");
+const $settingsScreen = $("#js-settings-screen");
+const $chooseCross = $("#js-choose-cross");
+const $chooseCircle = $("#js-choose-circle");
 
-const chooseCross = $("#js-choose-cross");
-const chooseCircle = $("#js-choose-circle");
+const $gameScreen = $("#js-game-screen");
+const $turnQuote = $("#js-turn-quote");
+const $turnHint = $("#js-turn-hint");
 
 const $a1 = $("#js-a1");
 const $a2 = $("#js-a2");
@@ -23,6 +25,7 @@ const initialGameState = {
 
     playerSign: null,
     computerSign: null,
+    turn: null,
 
 };
 
@@ -42,7 +45,12 @@ const initialBoardState = {
 
 };
 
-// ************** GAME MECHANICS ****************** //
+const playerTurnQuote = "Do or do not, there is no try";
+const playerTurnHint = "(it's your turn!)";
+const computerTurnQuote = "Patience you must have, my young padawan";
+const computerTurnHint = "(it's computer's turn!)";
+
+// ************** GAME FLOW ****************** //
 
 const startGame = playerSign => {
 
@@ -54,7 +62,10 @@ const startGame = playerSign => {
     gameState.playerSign = playerSign;
     gameState.playerSign === "cross" ? gameState.computerSign = "circle" : gameState.computerSign = "cross";
 
-    // TODO: deciding who starts the game also should be handled here
+    // setting turn as a player's turn and displaying turn status:
+    gameState.turn = "player"; // TODO: deciding who starts the game should be varied
+    renderTurnMessage()
+
     // TODO: add a callback for removing all signs from board after restart
 
 };
@@ -65,6 +76,20 @@ const handlePlayerMove = field => {
 
     boardState[field] = playerSign; // checking field as marked by player
     appendSignToField(playerSign, field); // rendering image inside field
+
+    // TODO: checkForVictory()
+
+    // TODO: add a condition - if checkForVictory() returns false, game continues:
+
+    startComputerTurn()
+
+};
+
+const startComputerTurn = () => {
+
+    // setting turn as a computer's turn and displaying turn status:
+    gameState.turn = "computer";
+    renderTurnMessage()
 
 };
 
@@ -100,7 +125,7 @@ const appendSignToField = (sign, field) => {
             break;
         case "c3":
             renderSign(sign, $c3);
-            
+
     }
 
 };
@@ -116,29 +141,43 @@ const renderSign = (sign, field) => {
 
 };
 
+const renderTurnMessage = () => {
+
+    if (gameState.turn === "player") {
+        $turnQuote.text(playerTurnQuote);
+        $turnHint.text(playerTurnHint)
+    }
+
+    else {
+        $turnQuote.text(computerTurnQuote);
+        $turnHint.text(computerTurnHint)
+    }
+
+};
+
 // ************** EVENT LISTENERS ****************** //
 
 const handleSettingsClick = playerSign => {
 
     // hide settings screen and show game board:
-    settingsScreen.toggleClass("hidden");
-    gameScreen.toggleClass("hidden");
+    $settingsScreen.toggleClass("hidden");
+    $gameScreen.toggleClass("hidden");
 
     startGame(playerSign);
 
 };
 
 const handleFieldClick = field => {
-    // check if field is empty - if so, execute player's move:
-    if (!boardState[field]) { handlePlayerMove(field) }
+    // check if field is empty and if it's player's turn - if so, execute player's move:
+    if (!boardState[field] && gameState.turn === "player") { handlePlayerMove(field) }
 };
 
 $(document).ready(() => {
 
     startGame("cross"); // TODO: this is for development only, remove it later! Normally game is started from handleSettingsClick()
 
-    chooseCross.on("click", () => handleSettingsClick("cross"));
-    chooseCircle.on("click", () => handleSettingsClick("circle"));
+    $chooseCross.on("click", () => handleSettingsClick("cross"));
+    $chooseCircle.on("click", () => handleSettingsClick("circle"));
 
     $a1.on("click", () => handleFieldClick("a1"));
     $a2.on("click", () => handleFieldClick("a2"));
