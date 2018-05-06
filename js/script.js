@@ -64,13 +64,55 @@ const handlePlayerMove = field => {
     const playerSign = gameState.playerSign;
 
     boardState[field] = playerSign; // checking field as marked by player
-    displaySign(playerSign, field); // rendering image inside field
+    appendSignToField(playerSign, field); // rendering image inside field
 
 };
 
 // ************** HELPER FUNCTIONS ****************** //
 
-const displaySign = (sign, field) => {
+const appendSignToField = (sign, field) => {
+
+    switch (field) {
+
+        case "a1":
+            renderSign(sign, $a1);
+            break;
+        case "a2":
+            renderSign(sign, $a2);
+            break;
+        case "a3":
+            renderSign(sign, $a3);
+            break;
+        case "b1":
+            renderSign(sign, $b1);
+            break;
+        case "b2":
+            renderSign(sign, $b2);
+            break;
+        case "b3":
+            renderSign(sign, $b3);
+            break;
+        case "c1":
+            renderSign(sign, $c1);
+            break;
+        case "c2":
+            renderSign(sign, $c2);
+            break;
+        case "c3":
+            renderSign(sign, $c3);
+            
+    }
+
+};
+
+const renderSign = (sign, field) => {
+
+    // Cross is always a first child and circle is always a second child
+
+    sign === "cross" ?
+        field.children(":first").toggleClass("hidden")
+        :
+        field.children(":last").toggleClass("hidden")
 
 };
 
