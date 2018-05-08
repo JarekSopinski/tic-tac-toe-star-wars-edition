@@ -45,12 +45,33 @@ const initialBoardState = {
 
 };
 
+const victoryCombinations = [
+
+    // horizontal:
+    [boardState.a1, boardState.a2, boardState.a3],
+    [boardState.b1, boardState.b2, boardState.b3],
+    [boardState.c1, boardState.c2, boardState.c3],
+
+    // vertical:
+    [boardState.a1, boardState.b1, boardState.c1],
+    [boardState.a2, boardState.b2, boardState.c2],
+    [boardState.a3, boardState.b3, boardState.c3],
+
+    // slant:
+    [boardState.a1, boardState.b2, boardState.c3],
+    [boardState.a3, boardState.b2, boardState.c1]
+
+];
+
+
 const playerTurnQuote = "Do or do not, there is no try";
 const playerTurnHint = "(it's your turn!)";
 const computerTurnQuote = "Patience you must have, my young padawan";
 const computerTurnHint = "(it's computer's turn!)";
 
+
 // ************** GAME FLOW ****************** //
+
 
 const startGame = playerSign => {
 
@@ -70,30 +91,76 @@ const startGame = playerSign => {
 
 };
 
+const startNewTurn = () => {
+    // toggles turn and displays new turn status; in case of computer also runs move function
+
+    switch (gameState.turn) {
+
+        case "player":
+            gameState.turn = "computer";
+            renderTurnMessage();
+            handleComputerMove();
+            break;
+
+        case "computer":
+            gameState.turn = "player";
+            renderTurnMessage();
+            // opposing to first case, we don't run handle(...)Move from here
+            // in case of player, it's an event listener callback!
+
+    }
+
+};
+
 const handlePlayerMove = field => {
+    // runs as a callback from handleFieldClick() event listener
 
     const playerSign = gameState.playerSign;
 
     boardState[field] = playerSign; // checking field as marked by player
     appendSignToField(playerSign, field); // rendering image inside field
 
-    // TODO: checkForVictory()
-
-    // TODO: add a condition - if checkForVictory() returns false, game continues:
-
-    startComputerTurn()
+    checkForVictory() ? stopGame() : startNewTurn()
 
 };
 
-const startComputerTurn = () => {
-
-    // setting turn as a computer's turn and displaying turn status:
-    gameState.turn = "computer";
-    renderTurnMessage()
+const handleComputerMove = () => {
+    // computer's game logic happens here
 
 };
+
+const checkForVictory = () => {
+    // runs at the end of each turn, after move by player or computer has been made
+
+    let isVictory = false;
+
+    victoryCombinations.forEach(combination => {
+
+        if (combination[0] === gameState.turn
+            && combination[1] === gameState.turn
+            && combination[2] === gameState.turn) {
+            isVictory = true
+        }
+
+        // for example in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
+        // gameState.turn = "player" || "computer", so this checks if field is marked as of them
+
+    });
+
+    return isVictory
+
+};
+
+const stopGame = () => {
+    // runs if checkForVictory returns true or in case of a draw
+
+    console.log("Game has ended");
+
+};
+
 
 // ************** HELPER FUNCTIONS ****************** //
+
 
 const appendSignToField = (sign, field) => {
 
@@ -155,7 +222,9 @@ const renderTurnMessage = () => {
 
 };
 
+
 // ************** EVENT LISTENERS ****************** //
+
 
 const handleSettingsClick = playerSign => {
 
