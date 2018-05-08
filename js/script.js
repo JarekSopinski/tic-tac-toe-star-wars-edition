@@ -132,7 +132,7 @@ const handlePlayerMove = field => {
 const handleComputerMove = () => {
     // find field to mark, mark it, then victory or new turn
 
-    const field = findFieldToMarkByComputer();
+    const field = findFieldToMark();
     const computerSign = gameState.computerSign;
 
     boardState[field] = computerSign; // checking field as marked by computer
@@ -181,23 +181,91 @@ const stopGame = () => {
 };
 
 
-// ************** COMPUTER LOGIC ****************** //
+// ************** COMPUTER IQ ****************** //
 
 
-const findFieldToMarkByComputer = () => {
+const findFieldToMark = () => {
 
-    let markedField;
+    /*
+    Computer runs 2 checks:
+    1) If it can get a win in this turn;
+    2) If enemy has to be blocked (or enemy will win next turn);
+    If both failed, it marks a field in a column or row where it already has one mark;
+    Otherwise, it marks random field.
+     */
 
-    // TODO: add functions for more advanced checks. If they all fail, set field as random
+    let fieldToMark;
 
-    markedField = getRandomField();
+    if ( checkIfVictoryCanBeAchieved() ) {
+        fieldToMark = checkIfVictoryCanBeAchieved()
+    } else if ( checkIfEnemyHasToBeBlocked() ) {
+        fieldToMark = checkIfEnemyHasToBeBlocked()
+    } else if ( checkIfAnyFieldIsMarked() ) {
+        fieldToMark = checkIfAnyFieldIsMarked()
+    }
+    else {
+        fieldToMark = getRandomField();
+    }
 
-    return markedField
+    return fieldToMark
+
+};
+
+const checkIfVictoryCanBeAchieved = () => {
+
+    const sign = gameState.signInCurrentTurn;
+    let fieldToMark = null;
+
+    victoryCombinations.forEach(combination => {
+
+        const A = combination[0];
+        const B = combination[1];
+        const C = combination[2];
+
+        // Computer checks if there is a row or column in which it only has one missing field.
+        // If so, this field is the function's result (field's name, taken from an array, not a value from state!).
+
+        if (boardState[A] === sign && boardState[B] === sign) {
+            fieldToMark = C
+        } else if (boardState[A] === sign && boardState[C] === sign) {
+            fieldToMark = B
+        } else if (boardState[B] === sign && boardState[C] === sign) {
+            fieldToMark = A
+        }
+
+    });
+
+    // If check failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
+    // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
+
+    console.log(`field to mark: ${fieldToMark}`);
+    return fieldToMark
+
+};
+
+const checkIfEnemyHasToBeBlocked = () => {
+
+};
+
+const checkIfAnyFieldIsMarked = () => {
+
+
+};
+
+const getRandomField = () => {
+
+    const fields = Object.keys(boardState);
+    const randomField = fields[Math.floor(Math.random() * fields.length)];
+
+    console.log(randomField);
+
+    // if field was already marked, recursion is used - function calls itself back, until if finds an empty field:
+    return boardState[randomField] ? getRandomField() : randomField
 
 };
 
 
-// ************** HELPER FUNCTIONS ****************** //
+// ************** RENDERING ****************** //
 
 
 const appendSignToField = (sign, field) => {
@@ -257,18 +325,6 @@ const renderTurnMessage = () => {
         $turnQuote.text(computerTurnQuote);
         $turnHint.text(computerTurnHint)
     }
-
-};
-
-const getRandomField = () => {
-
-  const fields = Object.keys(boardState);
-  const randomField = fields[Math.floor(Math.random() * fields.length)];
-
-  console.log(randomField);
-
-  // if field was already marked, recursion is used - function calls itself back, until if finds an empty field:
-  return boardState[randomField] ? getRandomField() : randomField
 
 };
 
