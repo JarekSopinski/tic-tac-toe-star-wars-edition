@@ -26,6 +26,7 @@ const initialGameState = {
     playerSign: null,
     computerSign: null,
     turn: null,
+    signInCurrentTurn: null
 
 };
 
@@ -85,6 +86,7 @@ const startGame = playerSign => {
 
     // setting turn as a player's turn and displaying turn status:
     gameState.turn = "player"; // TODO: deciding who starts the game should be varied
+    gameState.signInCurrentTurn = gameState.playerSign;
     renderTurnMessage()
 
     // TODO: add a callback for removing all signs from board after restart
@@ -98,12 +100,14 @@ const startNewTurn = () => {
 
         case "player":
             gameState.turn = "computer";
+            gameState.signInCurrentTurn = gameState.computerSign;
             renderTurnMessage();
             handleComputerMove(); // TODO: run this function after a short timeout to simulate computer "thinking"
             break;
 
         case "computer":
             gameState.turn = "player";
+            gameState.signInCurrentTurn = gameState.playerSign;
             renderTurnMessage();
             // opposing to first case, we don't run handle(...)Move from here
             // in case of player, it's an event listener callback!
@@ -146,14 +150,14 @@ const checkForVictory = () => {
 
     victoryCombinations.forEach(combination => {
 
-        if (combination[0] === gameState.turn
-            && combination[1] === gameState.turn
-            && combination[2] === gameState.turn) {
+        // Each combo array has 3 fields. We check if all of them have the same mark.
+        // For example in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
+
+        if (combination[0] === gameState.signInCurrentTurn
+            && combination[1] === gameState.signInCurrentTurn
+            && combination[2] === gameState.signInCurrentTurn) {
             isVictory = true
         } else { console.log("no victory") } // TODO: else cond. only for development
-
-        // for example in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
-        // gameState.turn = "player" || "computer", so this checks if field is marked as of them
 
     });
 
