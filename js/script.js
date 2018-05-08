@@ -49,18 +49,18 @@ const initialBoardState = {
 const victoryCombinations = [
 
     // horizontal:
-    [boardState.a1, boardState.a2, boardState.a3],
-    [boardState.b1, boardState.b2, boardState.b3],
-    [boardState.c1, boardState.c2, boardState.c3],
+    ["a1", "a2", "a3"],
+    ["b1", "b2", "b3"],
+    ["c1", "c2", "c3"],
 
     // vertical:
-    [boardState.a1, boardState.b1, boardState.c1],
-    [boardState.a2, boardState.b2, boardState.c2],
-    [boardState.a3, boardState.b3, boardState.c3],
+    ["a1", "b1", "c1"],
+    ["a2", "b2", "c2"],
+    ["a3", "b3", "c3"],
 
     // slant:
-    [boardState.a1, boardState.b2, boardState.c3],
-    [boardState.a3, boardState.b2, boardState.c1]
+    ["a1", "b2", "c3"],
+    ["a3", "b2", "c1"]
 
 ];
 
@@ -163,6 +163,7 @@ const checkForVictory = () => {
         if (boardState[comboFieldA] === gameState.signInCurrentTurn
             && boardState[comboFieldB] === gameState.signInCurrentTurn
             && boardState[comboFieldC] === gameState.signInCurrentTurn) {
+            console.log("victory");
             isVictory = true
         } else { console.log("no victory") } // TODO: else cond. only for development
 
