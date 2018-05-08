@@ -150,12 +150,19 @@ const checkForVictory = () => {
 
     victoryCombinations.forEach(combination => {
 
-        // Each combo array has 3 fields. We check if all of them have the same mark.
-        // For example in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
+        // Each combo array has 3 fields. We have to check if all of them have the same mark.
+        // For example, in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
 
-        if (combination[0] === gameState.signInCurrentTurn
-            && combination[1] === gameState.signInCurrentTurn
-            && combination[2] === gameState.signInCurrentTurn) {
+        // Checks need to run on boardState, not on victoryCombinations array - this array is not modified during game!
+        // Therefore we use values from combos array to check correct keys in boardState object:
+
+        const comboFieldA = combination[0];
+        const comboFieldB = combination[1];
+        const comboFieldC = combination[2];
+
+        if (boardState[comboFieldA] === gameState.signInCurrentTurn
+            && boardState[comboFieldB] === gameState.signInCurrentTurn
+            && boardState[comboFieldC] === gameState.signInCurrentTurn) {
             isVictory = true
         } else { console.log("no victory") } // TODO: else cond. only for development
 
