@@ -120,6 +120,7 @@ const handlePlayerMove = field => {
     boardState[field] = playerSign; // checking field as marked by player
     appendSignToField(playerSign, field); // rendering image inside field
 
+    // after player has made a move, game checks if he won. If not, computer's turn starts:
     checkForVictory() ? stopGame() : startNewTurn()
 
 };
@@ -140,7 +141,7 @@ const checkForVictory = () => {
             && combination[1] === gameState.turn
             && combination[2] === gameState.turn) {
             isVictory = true
-        }
+        } else { console.log("no victory") } // TODO: else cond. only for development
 
         // for example in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
         // gameState.turn = "player" || "computer", so this checks if field is marked as of them
@@ -220,6 +221,11 @@ const renderTurnMessage = () => {
         $turnHint.text(computerTurnHint)
     }
 
+};
+
+const getRandomField = () => {
+  const fields = Object.keys(boardState);
+  return fields[Math.floor(Math.random() * fields.length)];
 };
 
 
