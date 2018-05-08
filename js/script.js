@@ -99,7 +99,7 @@ const startNewTurn = () => {
         case "player":
             gameState.turn = "computer";
             renderTurnMessage();
-            handleComputerMove();
+            handleComputerMove(); // TODO: run this function after a short timeout to simulate computer "thinking"
             break;
 
         case "computer":
@@ -126,7 +126,16 @@ const handlePlayerMove = field => {
 };
 
 const handleComputerMove = () => {
-    // computer's game logic happens here
+    // find field to mark, mark it, then victory or new turn
+
+    const field = findFieldToMarkByComputer();
+    const computerSign = gameState.computerSign;
+
+    boardState[field] = computerSign; // checking field as marked by computer
+    appendSignToField(computerSign, field); // rendering image inside field
+
+    // after computer has made a move, game checks if it won. If not, player's turn starts:
+    checkForVictory() ? stopGame() : startNewTurn()
 
 };
 
@@ -156,6 +165,28 @@ const stopGame = () => {
     // runs if checkForVictory returns true or in case of a draw
 
     console.log("Game has ended");
+
+};
+
+
+// ************** COMPUTER LOGIC ****************** //
+
+
+const findFieldToMarkByComputer = () => {
+
+    let markedField = "";
+
+    // TODO: add functions for more advanced checks. If they all fail, set field as random
+
+    markedField = getRandomField();
+    console.log(markedField);
+
+    if (boardState[markedField]) { findFieldToMarkByComputer() }
+    // in case field was already marked, function repeats itself - until it finds an empty field
+    else {
+        // in case field is empty
+        return markedField
+    }
 
 };
 
