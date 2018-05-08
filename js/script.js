@@ -186,19 +186,13 @@ const stopGame = () => {
 
 const findFieldToMarkByComputer = () => {
 
-    let markedField = "";
+    let markedField;
 
     // TODO: add functions for more advanced checks. If they all fail, set field as random
 
     markedField = getRandomField();
-    console.log(markedField);
 
-    if (boardState[markedField]) { findFieldToMarkByComputer() }
-    // in case field was already marked, function repeats itself - until it finds an empty field
-    else {
-        // in case field is empty
-        return markedField
-    }
+    return markedField
 
 };
 
@@ -267,8 +261,15 @@ const renderTurnMessage = () => {
 };
 
 const getRandomField = () => {
+
   const fields = Object.keys(boardState);
-  return fields[Math.floor(Math.random() * fields.length)];
+  const randomField = fields[Math.floor(Math.random() * fields.length)];
+
+  console.log(randomField);
+
+  // if field was already marked, recursion is used - function calls itself back, until if finds an empty field:
+  return boardState[randomField] ? getRandomField() : randomField
+
 };
 
 
