@@ -219,8 +219,8 @@ const findFieldToMark = () => {
 
 const tryToWinOrToBlock = (actionType) => {
 
+    const fieldsToMark = [];
     let sign;
-    let fieldToMark = null;
 
     // actionType can be "win" (first step in computer's logic) - in that case function operates on computer sign
     // or "block" (second step) - in that case function operates on player's sign:
@@ -239,24 +239,38 @@ const tryToWinOrToBlock = (actionType) => {
         // If so, this field is the function's result (field's name, taken from an array, not a value from state!).
 
         if (boardState[A] === sign && boardState[B] === sign) {
-            fieldToMark = C
+            fieldsToMark.push(C)
         } else if (boardState[A] === sign && boardState[C] === sign) {
-            fieldToMark = B
+            fieldsToMark.push(B)
         } else if (boardState[B] === sign && boardState[C] === sign) {
-            fieldToMark = A
+            fieldsToMark.push(A)
         }
 
-    }); // end of loop
+    }); // end of iteration
+
+    console.log("fields to mark: " + fieldsToMark);
+
+    /*
+    There are rare cases when computer will get two fields for winning or blocking. If we didn't save fields
+    to an array, we would only get the last field. Then, this field could be dismissed at the final check below,
+    because it could be already marked. Then the first, potentially correct field would not be marked and computer
+    would lose an opportunity for a correct move!
+
+    To prevent this mistake we need to save fields to an array and then run a check for marked fields by filtering
+    this array. Than we return first index. If there was no correct result, this will be undefined, and the function will
+    evaluate to false, as it should. If there were two correct results (very rare, but possible), than it doesn't matter,
+    if we choose first or second. The final case of one correct result is obvious.
+     */
+
+    const freeFieldsToMark = fieldsToMark.filter(field => { return !boardState[field] });
+
+    console.log("free fields to mark: " + freeFieldsToMark);
+
+    return freeFieldsToMark[0]
+
 
     // If check failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
     // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
-
-    console.log(`field to mark: ${fieldToMark}`);
-    if (boardState[fieldToMark]) {console.log("field marked!") }
-
-    // Preventing the case of choosing field which was already marked:
-    return !boardState[fieldToMark] ? fieldToMark : null
-
 };
 
 const checkIfAnyFieldIsMarked = () => {
