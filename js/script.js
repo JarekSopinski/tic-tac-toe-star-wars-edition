@@ -134,7 +134,7 @@ const startNewTurn = () => {
             gameState.turn = "computer";
             gameState.signInCurrentTurn = gameState.computerSign;
             renderMessage();
-            handleComputerMove(); // TODO: run this function after a short timeout to simulate computer "thinking"
+            setTimeout(handleComputerMove, 1000); // timeOut to simulate that computer "thinks" about the move
             break;
 
         case "computer":
