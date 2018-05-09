@@ -134,6 +134,43 @@ $normal-font: 'Montserrat', sans-serif;
   width: 100%;
 }
 
+.end-popup {
+  z-index: 2;
+  position: fixed;
+  top: 40vh;
+  left: 45vh;
+  padding: 20px;
+  background-color: $grey;
+  border: 5px solid $sw-title-yellow;
+  border-radius: 20px;
+}
+
+.end-popup_title {
+  margin-bottom: 50px;
+  @include text($normal-font, 30px, $sw-title-yellow)
+}
+
+.end-popup_button {
+  width: 90%;
+  display: block;
+  margin: auto;
+  padding: 10px;
+  border: 2px solid $sw-title-yellow;
+  cursor: pointer;
+}
+
+.end-popup_button_text {
+  @include text($normal-font, 20px, $sw-title-yellow);
+  display: block;
+  margin: auto;
+}
+
+.end-popup_middle-text {
+  display: block;
+  margin: 10px auto;
+  @include text($normal-font, 18px, $sw-title-yellow);
+  text-transform: uppercase;
+}
 
 @media screen and (min-width: 576px) {
 

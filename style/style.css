@@ -111,6 +111,48 @@
   display: block;
   width: 100%; }
 
+.end-popup {
+  z-index: 2;
+  position: fixed;
+  top: 40vh;
+  left: 45vh;
+  padding: 20px;
+  background-color: #787878;
+  border: 5px solid #FFE81F;
+  border-radius: 20px; }
+
+.end-popup_title {
+  margin-bottom: 50px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  color: #FFE81F;
+  text-align: center; }
+
+.end-popup_button {
+  width: 90%;
+  display: block;
+  margin: auto;
+  padding: 10px;
+  border: 2px solid #FFE81F;
+  cursor: pointer; }
+
+.end-popup_button_text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  color: #FFE81F;
+  text-align: center;
+  display: block;
+  margin: auto; }
+
+.end-popup_middle-text {
+  display: block;
+  margin: 10px auto;
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  color: #FFE81F;
+  text-align: center;
+  text-transform: uppercase; }
+
 @media screen and (min-width: 576px) {
   .header_title {
     font-family: "distant galaxy", cursive;

@@ -18,6 +18,11 @@ const $c1 = $("#js-c1");
 const $c2 = $("#js-c2");
 const $c3 = $("#js-c3");
 
+const endPopup = $("#js-end-popup");
+const endPopupTitle = $("#js-end-popup_title");
+const simpleRestartBtn = $("#js-end-popup_simple-restart-btn");
+const switchRestartBtn = $("#js-end-popup_switch-restart-btn");
+
 let gameState = {};
 let boardState = {};
 
