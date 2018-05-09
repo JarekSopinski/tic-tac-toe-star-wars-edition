@@ -18,10 +18,12 @@ const $c1 = $("#js-c1");
 const $c2 = $("#js-c2");
 const $c3 = $("#js-c3");
 
-const endPopup = $("#js-end-popup");
-const endPopupTitle = $("#js-end-popup_title");
-const simpleRestartBtn = $("#js-end-popup_simple-restart-btn");
-const switchRestartBtn = $("#js-end-popup_switch-restart-btn");
+const $endPopup = $("#js-end-popup");
+const $endPopupTitle = $("#js-end-popup_title");
+const $simpleRestartBtn = $("#js-end-popup_simple-restart-btn");
+const $simpleRestartText = $("#js-end-popup_simple-restart-text");
+const $switchRestartBtn = $("#js-end-popup_switch-restart-btn");
+const $switchRestartText = $("#js-end-popup_switch-restart-text");
 
 let gameState = {};
 let boardState = {};
@@ -33,6 +35,7 @@ const initialGameState = {
     turn: null,
     signInCurrentTurn: null,
     winner: null,
+    winnerSign: null,
     victoryFields: []
 
 };
@@ -103,6 +106,14 @@ const tieQuotes = [
     "Unexpected, this is, and unfortunate.",
     "These aren’t the droids you’re looking for!"
 ];
+
+const endPopupCrossWinTitle = "Light side prevails!";
+const endPopupCircleWinTitle = "Dark side prevails!";
+const endPopupTieTitle = "The force remains in a balance.";
+const endPopupContinueAsCross = "Try again as a Jedi...";
+const endPopupContinueAsCircle = "Try again as a Sith...";
+const endPopupSwitchToCircle = "...turn to the Dark Side!";
+const endPopupSwitchToCross = "...turn to the Light Side!";
 
 const crossBlueColor = "rgba(7,110,176,0.7)";
 const circleRedColor = "rgba(157,43,33,0.7)";
@@ -209,6 +220,7 @@ const checkForVictory = () => {
             console.log("victory");
             isVictory = true;
             gameState.winner = gameState.turn; // the "owner" of final turn is the winner
+            gameState.winnerSign = gameState.signInCurrentTurn;
             gameState.victoryFields.push(...[comboFieldA, comboFieldB, comboFieldC]) // will be used by fillVictoryCombinationWithColor()
 
         } else { console.log("no victory") } // TODO: else cond. only for development
@@ -232,7 +244,10 @@ const checkForTie = () => {
     // if every field is marked, function returns true - a tie has occurred:
     isTie = fieldValues.every(field => field === "marked");
     console.log("Is a tie? " + isTie);
-    if (isTie) { gameState.winner = "tie" }
+    if (isTie) {
+        gameState.winner = "tie";
+        gameState.winnerSign = "tie"
+    }
 
     return isTie
 
@@ -246,6 +261,7 @@ const stopGame = () => {
 
     fillVictoryCombinationWithColor();
     renderMessage();
+    setTimeout(displayEndPopup, 2000);
 
 };
 
@@ -518,6 +534,40 @@ const fillFieldWithColor = (field, color) => {
             $c3.css('background-color', color);
 
     }
+
+};
+
+const displayEndPopup = () => {
+
+    const winnerSign = gameState.winnerSign;
+    const playerSign = gameState.playerSign;
+
+    switch (winnerSign) {
+        case "cross":
+            $endPopupTitle.text(endPopupCrossWinTitle);
+            break;
+        case "circle":
+            $endPopupTitle.text(endPopupCircleWinTitle);
+            break;
+        case "tie":
+            $endPopupTitle.text(endPopupTieTitle)
+    }
+
+    switch (playerSign) {
+        case "cross":
+            $simpleRestartText.text(endPopupContinueAsCross);
+            $switchRestartText.text(endPopupSwitchToCircle);
+            $simpleRestartBtn.css('background-color', crossBlueColor);
+            $switchRestartBtn.css('background-color', circleRedColor);
+            break;
+        case "circle":
+            $simpleRestartText.text(endPopupContinueAsCircle);
+            $switchRestartText.text(endPopupSwitchToCross);
+            $simpleRestartBtn.css('background-color', circleRedColor);
+            $switchRestartBtn.css('background-color', crossBlueColor);
+    }
+
+    $endPopup.toggleClass("hidden")
 
 };
 

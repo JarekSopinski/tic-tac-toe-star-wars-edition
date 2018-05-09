@@ -115,7 +115,8 @@
   z-index: 2;
   position: fixed;
   top: 40vh;
-  left: 45vh;
+  left: 40vh;
+  min-width: 500px;
   padding: 20px;
   background-color: #787878;
   border: 5px solid #FFE81F;
