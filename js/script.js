@@ -132,12 +132,16 @@ const handlePlayerMove = field => {
 const handleComputerMove = () => {
     // find field to mark, mark it, then victory or new turn
 
+    console.log("computer turn starts");
+
     // TODO: difficulty check should be handled here - wise mode: call findFieldToMark() / dumb mode: call getRandomField()
     const field = findFieldToMark();
     const computerSign = gameState.computerSign;
 
     boardState[field] = computerSign; // checking field as marked by computer
     appendSignToField(computerSign, field); // rendering image inside field
+
+    console.log("computer turn ends");
 
     // after computer has made a move, game checks if it won. If not, player's turn starts:
     checkForVictory() ? stopGame() : startNewTurn()
@@ -191,7 +195,7 @@ const findFieldToMark = () => {
     Computer runs 2 checks:
     1) If it can get a win in this turn;
     2) If enemy has to be blocked (or enemy will win next turn);
-    If both failed, it marks a field in a column or row where it already has one mark;
+    If both failed, it marks a field in a column or row where it already has one mark and two other fields are empty;
     Otherwise, it marks random field.
      */
 
@@ -208,6 +212,7 @@ const findFieldToMark = () => {
         fieldToMark = getRandomField();
     }
 
+    console.log("decided to mark: " + fieldToMark);
     return fieldToMark
 
 };
@@ -222,7 +227,7 @@ const tryToWinOrToBlock = (actionType) => {
 
     actionType === "win" ? sign = gameState.computerSign : sign = gameState.playerSign;
 
-    console.log(sign);
+    console.log(actionType + " " + sign);
 
     victoryCombinations.forEach(combination => {
 
@@ -241,13 +246,16 @@ const tryToWinOrToBlock = (actionType) => {
             fieldToMark = A
         }
 
-    });
+    }); // end of loop
 
     // If check failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
     // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
 
     console.log(`field to mark: ${fieldToMark}`);
-    return fieldToMark
+    if (boardState[fieldToMark]) {console.log("field marked!") }
+
+    // Preventing the case of choosing field which was already marked:
+    return !boardState[fieldToMark] ? fieldToMark : null
 
 };
 
@@ -261,7 +269,7 @@ const getRandomField = () => {
     const fields = Object.keys(boardState);
     const randomField = fields[Math.floor(Math.random() * fields.length)];
 
-    console.log(randomField);
+    console.log("random field: " + randomField);
 
     // if field was already marked, recursion is used - function calls itself back, until if finds an empty field:
     return boardState[randomField] ? getRandomField() : randomField
