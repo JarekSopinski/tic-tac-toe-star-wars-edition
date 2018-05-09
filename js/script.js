@@ -72,6 +72,33 @@ const playerTurnHint = "(it's your turn!)";
 const computerTurnQuote = "Patience you must have, my young padawan";
 const computerTurnHint = "(it's computer's turn!)";
 
+const victoryHint = "(you win!)";
+const lossHint = "(you lost...)";
+const tieHint = "(it's a tie [fighter?]...)";
+
+const victoryQuotes = [
+    "Everything is proceeding as I have foreseen",
+    "Great, kid. Don’t get cocky",
+    "The circle is now complete",
+    "You don’t have to do this to impress me",
+    "All too easy!",
+    "Don't underestimate the Force"
+];
+
+const lossQuotes = [
+    "…I think I just blasted it",
+    "Apology accepted, Captain Needa",
+    "You’ve failed, your highness",
+    "It's a trap!",
+    "Now, young Skywalker, you will die"
+];
+
+const tieQuotes = [
+    "We had a slight weapons malfunction",
+    "Unexpected, this is, and unfortunate",
+    "These aren’t the droids you’re looking for!"
+];
+
 const crossBlueColor = "rgba(7,110,176,0.7)";
 const circleRedColor = "rgba(157,43,33,0.7)";
 
@@ -92,7 +119,7 @@ const startGame = playerSign => {
     // setting turn as a player's turn and displaying turn status:
     gameState.turn = "player"; // TODO: deciding who starts the game should be varied
     gameState.signInCurrentTurn = gameState.playerSign;
-    renderTurnMessage()
+    renderMessage()
 
     // TODO: add a callback for removing all signs from board after restart
 
@@ -106,14 +133,14 @@ const startNewTurn = () => {
         case "player":
             gameState.turn = "computer";
             gameState.signInCurrentTurn = gameState.computerSign;
-            renderTurnMessage();
+            renderMessage();
             handleComputerMove(); // TODO: run this function after a short timeout to simulate computer "thinking"
             break;
 
         case "computer":
             gameState.turn = "player";
             gameState.signInCurrentTurn = gameState.playerSign;
-            renderTurnMessage();
+            renderMessage();
             // opposing to first case, we don't run handle(...)Move from here
             // in case of player, it's an event listener callback!
 
@@ -393,16 +420,25 @@ const renderSign = (sign, field) => {
 
 };
 
-const renderTurnMessage = () => {
+const renderMessage = () => {
 
     if (gameState.turn === "player") {
         $turnQuote.text(playerTurnQuote);
         $turnHint.text(playerTurnHint)
     }
 
-    else {
+    else if (gameState.turn === "computer") {
         $turnQuote.text(computerTurnQuote);
         $turnHint.text(computerTurnHint)
+    }
+
+    else if (gameState.turn === "gameOver" && gameState.signInCurrentTurn === "cross") {
+        // light side victory
+
+    }
+
+    else if (gameState.turn === "gameOver" && gameState.signInCurrentTurn === "circle") {
+        // dark side victory
     }
 
 };
