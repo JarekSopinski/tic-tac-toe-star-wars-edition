@@ -73,29 +73,29 @@ const computerTurnQuote = "Patience you must have, my young padawan";
 const computerTurnHint = "(it's computer's turn!)";
 
 const victoryHint = "(you win!)";
-const lossHint = "(you lost...)";
+const lossHint = "(you lose!)";
 const tieHint = "(it's a tie [fighter?]...)";
 
 const victoryQuotes = [
-    "Everything is proceeding as I have foreseen",
-    "Great, kid. Don’t get cocky",
-    "The circle is now complete",
-    "You don’t have to do this to impress me",
+    "Everything is proceeding as I have foreseen.",
+    "Great, kid. Don’t get cocky.",
+    "The circle is now complete.",
+    "You don’t have to do this to impress me.",
     "All too easy!",
-    "Don't underestimate the Force"
+    "Don't underestimate the Force."
 ];
 
 const lossQuotes = [
-    "…I think I just blasted it",
-    "Apology accepted, Captain Needa",
-    "You’ve failed, your highness",
+    "…I think I just blasted it.",
+    "Apology accepted, Captain Needa.",
+    "You’ve failed, your highness.",
     "It's a trap!",
-    "Now, young Skywalker, you will die"
+    "Now, young Skywalker, you will die."
 ];
 
 const tieQuotes = [
-    "We had a slight weapons malfunction",
-    "Unexpected, this is, and unfortunate",
+    "We had a slight weapons malfunction.",
+    "Unexpected, this is, and unfortunate.",
     "These aren’t the droids you’re looking for!"
 ];
 
@@ -157,7 +157,7 @@ const handlePlayerMove = field => {
     appendSignToField(playerSign, field); // rendering image inside field
 
     // after player has made a move, game checks if he won. If not, computer's turn starts:
-    checkForVictory() ? stopGame() : startNewTurn()
+    checkForVictory() || checkForTie() ? stopGame() : startNewTurn()
 
 };
 
@@ -176,7 +176,7 @@ const handleComputerMove = () => {
     console.log("computer turn ends");
 
     // after computer has made a move, game checks if it won. If not, player's turn starts:
-    checkForVictory() ? stopGame() : startNewTurn()
+    checkForVictory() || checkForTie() ? stopGame() : startNewTurn()
 
 };
 
@@ -203,6 +203,7 @@ const checkForVictory = () => {
 
             console.log("victory");
             isVictory = true;
+            gameState.winner = gameState.turn; // the "owner" of final turn is the winner
             gameState.victoryFields.push(...[comboFieldA, comboFieldB, comboFieldC]) // will be used by fillVictoryCombinationWithColor()
 
         } else { console.log("no victory") } // TODO: else cond. only for development
@@ -213,17 +214,33 @@ const checkForVictory = () => {
 
 };
 
+const checkForTie = () => {
+
+    let isTie;
+    const fields = Object.keys(boardState);
+    const fieldValues = [];
+
+    fields.forEach(field => {
+        boardState[field] ? fieldValues.push("marked") : fieldValues.push("empty")
+    });
+
+    // if every field is marked, function returns true - a tie has occurred:
+    isTie = fieldValues.every(field => field === "marked");
+    console.log("Is a tie? " + isTie);
+    if (isTie) { gameState.winner = "tie" }
+
+    return isTie
+
+};
+
 const stopGame = () => {
     // runs if checkForVictory returns true or in case of a draw
 
     console.log("Game has ended");
-
-    gameState.winner = gameState.turn; // the "owner" of final turn is the winner
     gameState.turn = "gameOver"; // this will prevent any further moves by the player
 
     fillVictoryCombinationWithColor();
-
-
+    renderMessage();
 
 };
 
@@ -311,7 +328,7 @@ const tryToWinOrToBlock = (actionType) => {
     return freeFieldsToMark[0]
 
 
-    // If check failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
+    // If all checks failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
     // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
 };
 
@@ -432,13 +449,23 @@ const renderMessage = () => {
         $turnHint.text(computerTurnHint)
     }
 
-    else if (gameState.turn === "gameOver" && gameState.signInCurrentTurn === "cross") {
-        // light side victory
+    else if (gameState.turn === "gameOver" && gameState.winner === "player") {
+        const randomVictoryQuote = victoryQuotes[Math.floor(Math.random() * victoryQuotes.length)];
+        $turnQuote.text(randomVictoryQuote);
+        $turnHint.text(victoryHint);
 
     }
 
-    else if (gameState.turn === "gameOver" && gameState.signInCurrentTurn === "circle") {
-        // dark side victory
+    else if (gameState.turn === "gameOver" && gameState.winner === "computer") {
+        const randomLossQuote = lossQuotes[Math.floor(Math.random() * lossQuotes.length)];
+        $turnQuote.text(randomLossQuote);
+        $turnHint.text(lossHint);
+    }
+
+    else if (gameState.turn === "gameOver" && gameState.winner === "tie") {
+        const randomTieQuote = tieQuotes[Math.floor(Math.random() * tieQuotes.length)];
+        $turnQuote.text(randomTieQuote);
+        $turnHint.text(tieHint);
     }
 
 };
