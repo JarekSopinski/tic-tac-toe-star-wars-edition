@@ -205,8 +205,8 @@ const findFieldToMark = () => {
         fieldToMark = tryToWinOrToBlock("win")
     } else if ( tryToWinOrToBlock("block") ) {
         fieldToMark = tryToWinOrToBlock("block")
-    } else if ( checkIfAnyFieldIsMarked() ) {
-        fieldToMark = checkIfAnyFieldIsMarked()
+    } else if ( markSecondField() ) {
+        fieldToMark = markSecondField()
     }
     else {
         fieldToMark = getRandomField();
@@ -273,12 +273,50 @@ const tryToWinOrToBlock = (actionType) => {
     // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
 };
 
-const checkIfAnyFieldIsMarked = () => {
+const markSecondField = () => {
 
+    // This move is executed if there is a row or a column with one field marked by computer and two empty fields.
+    // In that case computer will try to add 2nd field and continue building 3-field win combo.
+
+    const fieldsToMark = [];
+    const sign = gameState.computerSign;
+
+    console.log("Trying markSecondField move");
+
+    victoryCombinations.forEach(combination => {
+
+        const A = combination[0];
+        const B = combination[1];
+        const C = combination[2];
+
+        if (boardState[A] === sign && !boardState[B] && !boardState[C]) {
+
+            fieldsToMark.push(B);
+            fieldsToMark.push(C)
+
+        } else if (!boardState[A] && boardState[B] === sign && !boardState[C]) {
+
+            fieldsToMark.push(A);
+            fieldsToMark.push(C)
+
+        } else if (!boardState[A] && !boardState[B] && boardState[C] === sign) {
+
+            fieldsToMark.push(A);
+            fieldsToMark.push(B)
+        }
+
+    }); // end of iteration
+
+    console.log("Empty fields: " + fieldsToMark);
+
+    // Computer can choose random field from the results. It could always choose first index, but this is better for game variation:
+    return fieldsToMark[Math.floor(Math.random() * fieldsToMark.length)];
 
 };
 
 const getRandomField = () => {
+
+    console.log("Trying to get random field");
 
     const fields = Object.keys(boardState);
     const randomField = fields[Math.floor(Math.random() * fields.length)];
