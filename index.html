@@ -16,9 +16,10 @@
     <h2 class="header_title--subtitle">Star Wars Edition</h2>
 </header>
 
+<!--SETTINGS: CHOOSE SIDE-->
+
 <div id="js-settings-screen"
-     class="settings hidden">
-    <!--TODO: remove hidden class-->
+     class="settings">
 
     <h3 class="settings_title">Are you a Jedi or a Sith?</h3>
 
@@ -40,9 +41,35 @@
 
 </div>
 
+<!--SETTINGS: CHOOSE DIFFICULTY-->
+
+<div id="js-difficulty-screen"
+     class="settings hidden">
+
+    <h3 class="settings_title">Are you up for the challenge?</h3>
+
+    <div class="settings_container">
+        <img src="img/yoda.png"
+             id="js-choose-hard"
+             class="settings_container_img">
+        <p class="settings_container_quote">Judge me by my size, do you?</p>
+        <p class="settings_container_hint">(wise computer)</p>
+    </div>
+
+    <div class="settings_container">
+        <img src="img/c3po.png"
+             id="js-choose-easy"
+             class="settings_container_img">
+        <p class="settings_container_quote">We're doomed!</p>
+        <p class="settings_container_hint">(dumb computer)</p>
+    </div>
+
+</div>
+
+<!--GAME BOARD-->
+
 <div id="js-game-screen"
-     class="game-screen">
-    <!--TODO: restore hidden class as default-->
+     class="game-screen hidden">
 
     <div class="game-screen_status">
         <h3 id="js-turn-quote" class="status_text--quote"></h3>
@@ -112,22 +139,20 @@
 
 </div>
 
+<!--GAME OVER POPUP-->
+
 <div id="js-end-popup" class="end-popup hidden">
 
-    <h3 id="js-end-popup_title" class="end-popup_title">Dark side is victorious!</h3>
+    <h3 id="js-end-popup_title" class="end-popup_title"></h3>
 
     <div id="js-end-popup_simple-restart-btn" class="end-popup_button">
-        <span id="js-end-popup_simple-restart-text" class="end-popup_button_text">
-            Continue as a Jedi...
-        </span>
+        <span id="js-end-popup_simple-restart-text" class="end-popup_button_text"></span>
     </div>
 
     <span class="end-popup_middle-text">or</span>
 
     <div id = "js-end-popup_switch-restart-btn" class="end-popup_button">
-        <span id="js-end-popup_switch-restart-text" class="end-popup_button_text">
-            ...turn to the Dark Side!
-        </span>
+        <span id="js-end-popup_switch-restart-text" class="end-popup_button_text"></span>
     </div>
 
 </div>

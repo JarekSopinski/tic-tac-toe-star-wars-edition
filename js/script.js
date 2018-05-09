@@ -2,6 +2,10 @@ const $settingsScreen = $("#js-settings-screen");
 const $chooseCross = $("#js-choose-cross");
 const $chooseCircle = $("#js-choose-circle");
 
+const $difficultyScreen = $("#js-difficulty-screen");
+const $chooseHard = $("#js-choose-hard");
+const $chooseEasy = $("#js-choose-easy");
+
 const $gameScreen = $("#js-game-screen");
 const $turnQuote = $("#js-turn-quote");
 const $turnHint = $("#js-turn-hint");
@@ -30,6 +34,7 @@ let boardState = {};
 
 const initialGameState = {
 
+    difficulty: null,
     playerSign: null,
     computerSign: null,
     turn: null,
@@ -68,7 +73,7 @@ const victoryCombinations = [
     ["a2", "b2", "c2"],
     ["a3", "b3", "c3"],
 
-    // slant:
+    // cross:
     ["a1", "b2", "c3"],
     ["a3", "b2", "c1"]
 
@@ -122,14 +127,17 @@ const circleRedColor = "rgba(157,43,33,0.7)";
 // ************** GAME FLOW ****************** //
 
 
-const startGame = playerSign => {
+const startGame = () => {
+
+    const playerSign = gameState.playerSign;
+    const difficulty = gameState.difficulty;
 
     gameState = $.extend(true, {}, initialGameState);
     // TODO: after restarting keep signs settings from previous game;
     boardState = $.extend(true, {}, initialBoardState);
 
-    // set signs for player and computer
     gameState.playerSign = playerSign;
+    gameState.difficulty = difficulty;
     gameState.playerSign === "cross" ? gameState.computerSign = "circle" : gameState.computerSign = "cross";
 
     // setting turn as a player's turn and displaying turn status:
@@ -577,11 +585,20 @@ const displayEndPopup = () => {
 
 const handleSettingsClick = playerSign => {
 
-    // hide settings screen and show game board:
     $settingsScreen.toggleClass("hidden");
+    $difficultyScreen.toggleClass("hidden");
+
+    gameState.playerSign = playerSign
+
+};
+
+const handleChooseDifficultyClick = difficulty => {
+
+    $difficultyScreen.toggleClass("hidden");
     $gameScreen.toggleClass("hidden");
 
-    startGame(playerSign);
+    gameState.difficulty = difficulty;
+    startGame()
 
 };
 
@@ -596,6 +613,9 @@ $(document).ready(() => {
 
     $chooseCross.on("click", () => handleSettingsClick("cross"));
     $chooseCircle.on("click", () => handleSettingsClick("circle"));
+
+    $chooseHard.on("click", () => handleChooseDifficultyClick("hard"));
+    $chooseEasy.on("click", () => handleChooseDifficultyClick("easy"));
 
     $a1.on("click", () => handleFieldClick("a1"));
     $a2.on("click", () => handleFieldClick("a2"));

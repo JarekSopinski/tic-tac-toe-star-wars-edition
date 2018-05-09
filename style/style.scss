@@ -50,6 +50,8 @@ $normal-font: 'Montserrat', sans-serif;
   text-transform: uppercase;
 }
 
+//***** SETTINGS (SIDE & DIFFICULTY) *****
+
 .settings {
   display: block;
   max-width: 300px;
@@ -94,6 +96,8 @@ $normal-font: 'Montserrat', sans-serif;
   font-style: italic;
 }
 
+//************ GAME BOARD ************
+
 .game-screen {
   display: block;
   max-width: 600px;
@@ -134,6 +138,8 @@ $normal-font: 'Montserrat', sans-serif;
   width: 100%;
 }
 
+//************ GAME OVER POPUP ************
+
 .end-popup {
   z-index: 2;
   position: fixed;
@@ -172,6 +178,8 @@ $normal-font: 'Montserrat', sans-serif;
   @include text($normal-font, 18px, $sw-title-yellow);
   text-transform: uppercase;
 }
+
+//************ MEDIA QUERIES ************
 
 @media screen and (min-width: 576px) {
 
