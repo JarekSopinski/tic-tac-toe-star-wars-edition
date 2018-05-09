@@ -26,7 +26,9 @@ const initialGameState = {
     playerSign: null,
     computerSign: null,
     turn: null,
-    signInCurrentTurn: null
+    signInCurrentTurn: null,
+    winner: null,
+    victoryFields: []
 
 };
 
@@ -69,6 +71,9 @@ const playerTurnQuote = "Do or do not, there is no try";
 const playerTurnHint = "(it's your turn!)";
 const computerTurnQuote = "Patience you must have, my young padawan";
 const computerTurnHint = "(it's computer's turn!)";
+
+const crossBlueColor = "rgba(7,110,176,0.7)";
+const circleRedColor = "rgba(157,43,33,0.7)";
 
 
 // ************** GAME FLOW ****************** //
@@ -168,8 +173,11 @@ const checkForVictory = () => {
         if (boardState[comboFieldA] === gameState.signInCurrentTurn
             && boardState[comboFieldB] === gameState.signInCurrentTurn
             && boardState[comboFieldC] === gameState.signInCurrentTurn) {
+
             console.log("victory");
-            isVictory = true
+            isVictory = true;
+            gameState.victoryFields.push(...[comboFieldA, comboFieldB, comboFieldC]) // will be used by fillVictoryCombinationWithColor()
+
         } else { console.log("no victory") } // TODO: else cond. only for development
 
     });
@@ -182,6 +190,13 @@ const stopGame = () => {
     // runs if checkForVictory returns true or in case of a draw
 
     console.log("Game has ended");
+
+    gameState.winner = gameState.turn; // the "owner" of final turn is the winner
+    gameState.turn = "gameOver"; // this will prevent any further moves by the player
+
+    fillVictoryCombinationWithColor();
+
+
 
 };
 
@@ -388,6 +403,52 @@ const renderTurnMessage = () => {
     else {
         $turnQuote.text(computerTurnQuote);
         $turnHint.text(computerTurnHint)
+    }
+
+};
+
+const fillVictoryCombinationWithColor = () => {
+
+    let color;
+    gameState.signInCurrentTurn === "cross" ? color = crossBlueColor : color = circleRedColor;
+
+    gameState.victoryFields.forEach(field => {
+        fillFieldWithColor(field, color)
+    })
+
+};
+
+const fillFieldWithColor = (field, color) => {
+
+    switch (field) {
+
+        case "a1":
+            $a1.css('background-color', color);
+            break;
+        case "a2":
+            $a2.css('background-color', color);
+            break;
+        case "a3":
+            $a3.css('background-color', color);
+            break;
+        case "b1":
+            $b1.css('background-color', color);
+            break;
+        case "b2":
+            $b2.css('background-color', color);
+            break;
+        case "b3":
+            $b3.css('background-color', color);
+            break;
+        case "c1":
+            $c1.css('background-color', color);
+            break;
+        case "c2":
+            $c2.css('background-color', color);
+            break;
+        case "c3":
+            $c3.css('background-color', color);
+
     }
 
 };
