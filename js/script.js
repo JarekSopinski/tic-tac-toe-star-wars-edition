@@ -132,6 +132,7 @@ const handlePlayerMove = field => {
 const handleComputerMove = () => {
     // find field to mark, mark it, then victory or new turn
 
+    // TODO: difficulty check should be handled here - wise mode: call findFieldToMark() / dumb mode: call getRandomField()
     const field = findFieldToMark();
     const computerSign = gameState.computerSign;
 
@@ -181,7 +182,7 @@ const stopGame = () => {
 };
 
 
-// ************** COMPUTER IQ ****************** //
+// ************** COMPUTER MOVES ****************** //
 
 
 const findFieldToMark = () => {
@@ -196,10 +197,10 @@ const findFieldToMark = () => {
 
     let fieldToMark;
 
-    if ( checkIfVictoryCanBeAchieved() ) {
-        fieldToMark = checkIfVictoryCanBeAchieved()
-    } else if ( checkIfEnemyHasToBeBlocked() ) {
-        fieldToMark = checkIfEnemyHasToBeBlocked()
+    if ( tryToWinOrToBlock("win") ) {
+        fieldToMark = tryToWinOrToBlock("win")
+    } else if ( tryToWinOrToBlock("block") ) {
+        fieldToMark = tryToWinOrToBlock("block")
     } else if ( checkIfAnyFieldIsMarked() ) {
         fieldToMark = checkIfAnyFieldIsMarked()
     }
@@ -211,10 +212,17 @@ const findFieldToMark = () => {
 
 };
 
-const checkIfVictoryCanBeAchieved = () => {
+const tryToWinOrToBlock = (actionType) => {
 
-    const sign = gameState.signInCurrentTurn;
+    let sign;
     let fieldToMark = null;
+
+    // actionType can be "win" (first step in computer's logic) - in that case function operates on computer sign
+    // or "block" (second step) - in that case function operates on player's sign:
+
+    actionType === "win" ? sign = gameState.computerSign : sign = gameState.playerSign;
+
+    console.log(sign);
 
     victoryCombinations.forEach(combination => {
 
@@ -222,7 +230,7 @@ const checkIfVictoryCanBeAchieved = () => {
         const B = combination[1];
         const C = combination[2];
 
-        // Computer checks if there is a row or column in which it only has one missing field.
+        // Computer checks if there is a row or column in which there is only one missing field.
         // If so, this field is the function's result (field's name, taken from an array, not a value from state!).
 
         if (boardState[A] === sign && boardState[B] === sign) {
@@ -240,10 +248,6 @@ const checkIfVictoryCanBeAchieved = () => {
 
     console.log(`field to mark: ${fieldToMark}`);
     return fieldToMark
-
-};
-
-const checkIfEnemyHasToBeBlocked = () => {
 
 };
 
