@@ -40,7 +40,6 @@ let boardState = {};
 
 const initialGameState = {
 
-    gameCount: 0,
     difficulty: null,
     playerSign: null,
     computerSign: null,
@@ -67,6 +66,8 @@ const initialBoardState = {
     c3: null
 
 };
+
+let gameCounter = 0;
 
 const fieldIDs = Object.keys(initialBoardState);
 
@@ -142,17 +143,25 @@ const circleRedColor = "rgba(157,43,33,0.7)";
 
 const prepareGame = () => {
 
+    console.log("Started preparing new game");
+
     // saving values from initial settings and, in case of restart, previous game, before clearing state:
 
     const playerSign = gameState.playerSign;
     const difficulty = gameState.difficulty;
 
+    // saving winner of previous game - value will be used in chooseWhoPlaysFirst() callback:
+
     let winnerOfLastGame;
-    gameState.gameCount > 0 ? winnerOfLastGame = gameState.winner : winnerOfLastGame = "noLastGame";
+
+    gameCounter === 0 || gameState.winner === "tie" ?
+        winnerOfLastGame = "noWinner"
+        :
+        winnerOfLastGame = gameState.winner;
 
     // clearing state:
 
-    if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
+    if (gameCounter > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
 
@@ -174,8 +183,11 @@ const prepareGame = () => {
 
 const chooseWhoPlaysFirst = (winnerOfLastGame) => {
 
+    // In case there is no winner, first players is chosen randomly.
+    // Otherwise, first player is the winner of previous game:
+
     switch (winnerOfLastGame) {
-        case "noLastGame" || "tie":
+        case "noWinner":
             let randomNumber = Math.floor(Math.random() * 2);
             randomNumber === 0 ? gameState.turn = "player" : gameState.turn = "computer";
             break;
@@ -322,7 +334,7 @@ const stopGame = () => {
 
     console.log("Game has ended");
     gameState.turn = "gameOver"; // this will prevent any further moves by the player
-    gameState.gameCount++;
+    gameCounter++;
 
     fillVictoryCombinationWithColor();
     renderMessage();
