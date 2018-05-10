@@ -190,9 +190,11 @@ const handleComputerMove = () => {
 
     console.log("computer turn starts");
 
-    // TODO: difficulty check should be handled here - wise mode: call findFieldToMark() / dumb mode: call getRandomField()
-    const field = findFieldToMark();
     const computerSign = gameState.computerSign;
+
+    // In hard difficulty, computer executes all moves. In easy, it always chooses random field:
+    let field;
+    gameState.difficulty === "hard" ? field = findFieldToMark() : field = getRandomField();
 
     boardState[field] = computerSign; // checking field as marked by computer
     appendSignToField(computerSign, field); // rendering image inside field
