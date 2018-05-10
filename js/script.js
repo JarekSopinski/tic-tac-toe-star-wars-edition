@@ -596,17 +596,8 @@ const hideSignInMarkedField = (field) => {
 
 const removeFieldsBgColors = () => {
 
-    // $a1.css('background-color', 'inherit');
-    // $a2.css('background-color', 'inherit');
-    // $a3.css('background-color', 'inherit');
-    //
-    // $b1.css('background-color', 'inherit');
-    // $b2.css('background-color', 'inherit');
-    // $b3.css('background-color', 'inherit');
-    //
-    // $c1.css('background-color', 'inherit');
-    // $c2.css('background-color', 'inherit');
-    // $c3.css('background-color', 'inherit');
+    const coloredFields = gameState.victoryFields;
+    coloredFields.forEach(field => $fields[field].css("background-color", "inherit"))
 
 };
 
