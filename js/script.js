@@ -247,8 +247,13 @@ const executePlayerMove = field => {
     boardState[field] = playerSign; // checking field as marked by player
     renderSignInSelectedField(playerSign, field); // rendering image inside field
 
-    // after player has made a move, game checks if he won. If not, computer's turn starts:
-    checkForVictory() || checkForTie() ? stopGame() : startNewTurn()
+    // After player has made a move, game checks if he won.
+    // If not, game checks for a tie.
+    // If both checks fail, game continues.
+
+    if (checkForVictory()) { stopGame() }
+    else if (checkForTie()) { stopGame() }
+    else { startNewTurn() }
 
 };
 
@@ -268,8 +273,13 @@ const executeComputerMove = () => {
 
     console.log("computer turn ends");
 
-    // after computer has made a move, game checks if it won. If not, player's turn starts:
-    checkForVictory() || checkForTie() ? stopGame() : startNewTurn()
+    // After computer has made a move, game checks if he won.
+    // If not, game checks for a tie.
+    // If both checks fail, game continues.
+
+    if (checkForVictory()) { stopGame() }
+    else if (checkForTie()) { stopGame() }
+    else { startNewTurn() }
 
 };
 
