@@ -150,10 +150,9 @@ const prepareGame = () => {
 
     // clearing state:
 
-    //clearBoardBeforeNewGame(); // needs to run BEFORE clearing state, because it requires data from old state!
+    if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
-    //if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }
 
     // restoring saved values to state:
 
@@ -527,43 +526,8 @@ const fillVictoryCombinationWithColor = () => {
     gameState.signInCurrentTurn === "cross" ? color = crossBlueColor : color = circleRedColor;
 
     gameState.victoryFields.forEach(field => {
-        fillFieldWithColor(field, color)
+        $fields[field].css("background-color", color)
     })
-
-};
-
-const fillFieldWithColor = (field, color) => {
-
-    switch (field) {
-
-        case "a1":
-            $a1.css('background-color', color);
-            break;
-        case "a2":
-            $a2.css('background-color', color);
-            break;
-        case "a3":
-            $a3.css('background-color', color);
-            break;
-        case "b1":
-            $b1.css('background-color', color);
-            break;
-        case "b2":
-            $b2.css('background-color', color);
-            break;
-        case "b3":
-            $b3.css('background-color', color);
-            break;
-        case "c1":
-            $c1.css('background-color', color);
-            break;
-        case "c2":
-            $c2.css('background-color', color);
-            break;
-        case "c3":
-            $c3.css('background-color', color);
-
-    }
 
 };
 
