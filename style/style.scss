@@ -166,6 +166,15 @@ $normal-font: 'Montserrat', sans-serif;
   cursor: pointer;
 }
 
+.end-popup_button--difficulty {
+  width: 90%;
+  display: block;
+  margin: 50px auto 0 auto;
+  padding: 10px;
+  border: 2px solid $sw-title-yellow;
+  cursor: pointer;
+}
+
 .end-popup_button_text {
   @include text($normal-font, 20px, $sw-title-yellow);
   display: block;

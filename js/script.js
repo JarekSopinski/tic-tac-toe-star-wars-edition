@@ -28,6 +28,8 @@ const $simpleRestartBtn = $("#js-end-popup_simple-restart-btn");
 const $simpleRestartText = $("#js-end-popup_simple-restart-text");
 const $switchRestartBtn = $("#js-end-popup_switch-restart-btn");
 const $switchRestartText = $("#js-end-popup_switch-restart-text");
+const $toggleDifficultyBtn = $("#js-end-popup_toggle-difficulty-btn");
+const $toggleDifficultyText = $("#js-end-popup_toggle-difficulty-text");
 
 let gameState = {};
 let boardState = {};
@@ -119,6 +121,10 @@ const endPopupContinueAsCross = "Try again as a Jedi...";
 const endPopupContinueAsCircle = "Try again as a Sith...";
 const endPopupSwitchToCircle = "...turn to the Dark Side!";
 const endPopupSwitchToCross = "...turn to the Light Side!";
+const endPopupSwitchToEasy = "Change difficulty to easy?";
+const endPopupSwitchToHard = "Change difficulty to hard?";
+const endPopupSwitchedToHard = "Impressive. Most impressive. (set to hard!)";
+const endPopupSwitchedToEasy = "Han my boy, you disappoint me. (set to easy!)";
 
 const crossBlueColor = "rgba(7,110,176,0.7)";
 const circleRedColor = "rgba(157,43,33,0.7)";
@@ -551,6 +557,7 @@ const displayEndPopup = () => {
 
     const winnerSign = gameState.winnerSign;
     const playerSign = gameState.playerSign;
+    const difficulty = gameState.difficulty;
 
     switch (winnerSign) {
         case "cross":
@@ -577,6 +584,8 @@ const displayEndPopup = () => {
             $switchRestartBtn.css('background-color', crossBlueColor);
     }
 
+    difficulty === "easy" ? $toggleDifficultyText.text(endPopupSwitchToHard) : $toggleDifficultyText.text(endPopupSwitchToEasy);
+
     $endPopup.toggleClass("hidden")
 
 };
@@ -585,16 +594,16 @@ const displayEndPopup = () => {
 // ************** EVENT LISTENERS ****************** //
 
 
-const handleSettingsClick = playerSign => {
+const setInitialSign = playerSign => {
+
+    gameState.playerSign = playerSign;
 
     $settingsScreen.toggleClass("hidden");
-    $difficultyScreen.toggleClass("hidden");
-
-    gameState.playerSign = playerSign
+    $difficultyScreen.toggleClass("hidden")
 
 };
 
-const handleChooseDifficultyClick = difficulty => {
+const setInitialDifficulty = difficulty => {
 
     $difficultyScreen.toggleClass("hidden");
     $gameScreen.toggleClass("hidden");
@@ -609,15 +618,33 @@ const handleFieldClick = field => {
     if (!boardState[field] && gameState.turn === "player") { handlePlayerMove(field) }
 };
 
+const toggleDifficulty = () => {
+
+    switch (gameState.difficulty) {
+        case "easy":
+            gameState.difficulty = "hard";
+            $toggleDifficultyText.empty();
+            $toggleDifficultyText.text(endPopupSwitchedToHard);
+            break;
+        case "hard":
+            gameState.difficulty = "easy";
+            $toggleDifficultyText.empty();
+            $toggleDifficultyText.text(endPopupSwitchedToEasy)
+    }
+
+};
+
 $(document).ready(() => {
 
-    startGame("cross"); // TODO: this is for development only, remove it later! Normally game is started from handleSettingsClick()
+    // initial settings actions:
 
-    $chooseCross.on("click", () => handleSettingsClick("cross"));
-    $chooseCircle.on("click", () => handleSettingsClick("circle"));
+    $chooseCross.on("click", () => setInitialSign("cross"));
+    $chooseCircle.on("click", () => setInitialSign("circle"));
 
-    $chooseHard.on("click", () => handleChooseDifficultyClick("hard"));
-    $chooseEasy.on("click", () => handleChooseDifficultyClick("easy"));
+    $chooseHard.on("click", () => setInitialDifficulty("hard"));
+    $chooseEasy.on("click", () => setInitialDifficulty("easy"));
+
+    // in-game actions:
 
     $a1.on("click", () => handleFieldClick("a1"));
     $a2.on("click", () => handleFieldClick("a2"));
@@ -630,6 +657,10 @@ $(document).ready(() => {
     $c1.on("click", () => handleFieldClick("c1"));
     $c2.on("click", () => handleFieldClick("c2"));
     $c3.on("click", () => handleFieldClick("c3"));
+
+    // after-game (restart) actions:
+
+    $toggleDifficultyBtn.on("click", toggleDifficulty)
 
 });
 
