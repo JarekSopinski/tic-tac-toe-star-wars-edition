@@ -36,6 +36,7 @@ let boardState = {};
 
 const initialGameState = {
 
+    gameCount: 0,
     difficulty: null,
     playerSign: null,
     computerSign: null,
@@ -133,27 +134,69 @@ const circleRedColor = "rgba(157,43,33,0.7)";
 // ************** GAME FLOW ****************** //
 
 
-const startGame = () => {
+const prepareGame = () => {
+
+    // saving values from initial settings and, in case of restart, previous game, before clearing state:
 
     const playerSign = gameState.playerSign;
     const difficulty = gameState.difficulty;
 
+    let winnerOfLastGame;
+    gameState.gameCount > 0 ? winnerOfLastGame = gameState.winner : winnerOfLastGame = "noLastGame";
+
+    // clearing state:
+
     gameState = $.extend(true, {}, initialGameState);
-    // TODO: after restarting keep signs settings from previous game;
     boardState = $.extend(true, {}, initialBoardState);
+    // TODO: restore hidden class on all signs
+
+    // restoring saved values to state:
 
     gameState.playerSign = playerSign;
     gameState.difficulty = difficulty;
+
+    // setting computer sign:
     gameState.playerSign === "cross" ? gameState.computerSign = "circle" : gameState.computerSign = "cross";
 
-    // setting turn as a player's turn and displaying turn status:
-    gameState.turn = "player"; // TODO: deciding who starts the game should be varied
-    gameState.signInCurrentTurn = gameState.playerSign;
-    renderMessage()
+    // deciding who plays first:
+    chooseWhoPlaysFirst(winnerOfLastGame);
 
-    // TODO: add a callback for removing all signs from board after restart
+    // starting first move, depending on turn decided in chooseWhoPlaysFirst():
+    startGame()
 
 };
+
+const chooseWhoPlaysFirst = (winnerOfLastGame) => {
+
+    switch (winnerOfLastGame) {
+        case "noLastGame" || "tie":
+            let randomNumber = Math.floor(Math.random() * 2);
+            randomNumber === 0 ? gameState.turn = "player" : gameState.turn = "computer";
+            break;
+        case "player":
+            gameState.turn = "player";
+            break;
+        case "computer":
+            gameState.turn = "computer"
+    }
+
+};
+
+const startGame = () => {
+
+  switch (gameState.turn) {
+      case "player":
+          gameState.signInCurrentTurn = gameState.playerSign;
+          renderMessage();
+          break;
+      case "computer":
+          gameState.signInCurrentTurn = gameState.computerSign;
+          renderMessage();
+          setTimeout(executeComputerMove, 1000);
+  }
+
+};
+
 
 const startNewTurn = () => {
     // toggles turn and displays new turn status; in case of computer also runs move function
@@ -164,7 +207,7 @@ const startNewTurn = () => {
             gameState.turn = "computer";
             gameState.signInCurrentTurn = gameState.computerSign;
             renderMessage();
-            setTimeout(handleComputerMove, 1000); // timeOut to simulate that computer "thinks" about the move
+            setTimeout(executeComputerMove, 1000); // timeOut to simulate that computer "thinks" about the move
             break;
 
         case "computer":
@@ -178,7 +221,7 @@ const startNewTurn = () => {
 
 };
 
-const handlePlayerMove = field => {
+const executePlayerMove = field => {
     // runs as a callback from handleFieldClick() event listener
 
     const playerSign = gameState.playerSign;
@@ -191,7 +234,7 @@ const handlePlayerMove = field => {
 
 };
 
-const handleComputerMove = () => {
+const executeComputerMove = () => {
     // find field to mark, mark it, then victory or new turn
 
     console.log("computer turn starts");
@@ -274,6 +317,7 @@ const stopGame = () => {
 
     console.log("Game has ended");
     gameState.turn = "gameOver"; // this will prevent any further moves by the player
+    gameState.gameCount++;
 
     fillVictoryCombinationWithColor();
     renderMessage();
@@ -609,13 +653,13 @@ const setInitialDifficulty = difficulty => {
     $gameScreen.toggleClass("hidden");
 
     gameState.difficulty = difficulty;
-    startGame()
+    prepareGame()
 
 };
 
 const handleFieldClick = field => {
     // check if field is empty and if it's player's turn - if so, execute player's move:
-    if (!boardState[field] && gameState.turn === "player") { handlePlayerMove(field) }
+    if (!boardState[field] && gameState.turn === "player") { executePlayerMove(field) }
 };
 
 const toggleDifficulty = () => {
