@@ -642,7 +642,11 @@ const clearBoardBeforeNewGame = () => {
     fields.forEach(field => {
         // hide sign in field is already marked:
         if (boardState[field]) { hideSign(field) }
-    })
+    });
+
+    // also, if last game didn't end in a tie, winning bg colors have to be cleared:
+
+    if (gameState.winner !== "tie") { removeFieldsBgColors() }
 
 };
 
@@ -714,6 +718,22 @@ const hideSign = (field) => {
             break;
 
     }
+
+};
+
+const removeFieldsBgColors = () => {
+
+    $a1.css('background-color', 'inherit');
+    $a2.css('background-color', 'inherit');
+    $a3.css('background-color', 'inherit');
+
+    $b1.css('background-color', 'inherit');
+    $b2.css('background-color', 'inherit');
+    $b3.css('background-color', 'inherit');
+
+    $c1.css('background-color', 'inherit');
+    $c2.css('background-color', 'inherit');
+    $c3.css('background-color', 'inherit');
 
 };
 
