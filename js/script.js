@@ -574,7 +574,7 @@ const clearBoardBeforeNewGame = () => {
     const fields = Object.keys(boardState);
     fields.forEach(field => {
         // hide sign in field is already marked:
-        if (boardState[field]) { hideSign(field) }
+        if (boardState[field]) { hideSignInMarkedField(field) }
     });
 
     // also, if last game didn't end in a tie, winning bg colors have to be cleared:
@@ -583,90 +583,30 @@ const clearBoardBeforeNewGame = () => {
 
 };
 
-const hideSign = (field) => {
+const hideSignInMarkedField = (field) => {
 
-    switch (field) {
+    // Cross is always a first child and circle is always a second child
 
-        case "a1":
-            boardState.a1 === "cross" ?
-                $a1.children(":first").toggleClass("hidden")
-                :
-                $a1.children(":last").toggleClass("hidden");
-            break;
-
-        case "a2":
-            boardState.a2 === "cross" ?
-                $a2.children(":first").toggleClass("hidden")
-                :
-                $a2.children(":last").toggleClass("hidden");
-            break;
-
-        case "a3":
-            boardState.a3 === "cross" ?
-                $a3.children(":first").toggleClass("hidden")
-                :
-                $a3.children(":last").toggleClass("hidden");
-            break;
-
-        case "b1":
-            boardState.b1 === "cross" ?
-                $b1.children(":first").toggleClass("hidden")
-                :
-                $b1.children(":last").toggleClass("hidden");
-            break;
-
-        case "b2":
-            boardState.b2 === "cross" ?
-                $b2.children(":first").toggleClass("hidden")
-                :
-                $b2.children(":last").toggleClass("hidden");
-            break;
-
-        case "b3":
-            boardState.b3 === "cross" ?
-                $b3.children(":first").toggleClass("hidden")
-                :
-                $b3.children(":last").toggleClass("hidden");
-            break;
-
-        case "c1":
-            boardState.c1 === "cross" ?
-                $c1.children(":first").toggleClass("hidden")
-                :
-                $c1.children(":last").toggleClass("hidden");
-            break;
-
-        case "c2":
-            boardState.c2 === "cross" ?
-                $c2.children(":first").toggleClass("hidden")
-                :
-                $c2.children(":last").toggleClass("hidden");
-            break;
-
-        case "c3":
-            boardState.c3 === "cross" ?
-                $c3.children(":first").toggleClass("hidden")
-                :
-                $c3.children(":last").toggleClass("hidden");
-            break;
-
-    }
+    boardState[field] === "cross" ?
+        $fields[field].children(":first").toggleClass("hidden")
+        :
+        $fields[field].children(":last").toggleClass("hidden");
 
 };
 
 const removeFieldsBgColors = () => {
 
-    $a1.css('background-color', 'inherit');
-    $a2.css('background-color', 'inherit');
-    $a3.css('background-color', 'inherit');
-
-    $b1.css('background-color', 'inherit');
-    $b2.css('background-color', 'inherit');
-    $b3.css('background-color', 'inherit');
-
-    $c1.css('background-color', 'inherit');
-    $c2.css('background-color', 'inherit');
-    $c3.css('background-color', 'inherit');
+    // $a1.css('background-color', 'inherit');
+    // $a2.css('background-color', 'inherit');
+    // $a3.css('background-color', 'inherit');
+    //
+    // $b1.css('background-color', 'inherit');
+    // $b2.css('background-color', 'inherit');
+    // $b3.css('background-color', 'inherit');
+    //
+    // $c1.css('background-color', 'inherit');
+    // $c2.css('background-color', 'inherit');
+    // $c3.css('background-color', 'inherit');
 
 };
 
