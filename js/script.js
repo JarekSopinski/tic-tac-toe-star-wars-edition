@@ -10,18 +10,6 @@ const $gameScreen = $("#js-game-screen");
 const $turnQuote = $("#js-turn-quote");
 const $turnHint = $("#js-turn-hint");
 
-const $a1 = $("#js-a1");
-const $a2 = $("#js-a2");
-const $a3 = $("#js-a3");
-
-const $b1 = $("#js-b1");
-const $b2 = $("#js-b2");
-const $b3 = $("#js-b3");
-
-const $c1 = $("#js-c1");
-const $c2 = $("#js-c2");
-const $c3 = $("#js-c3");
-
 const $endPopup = $("#js-end-popup");
 const $endPopupTitle = $("#js-end-popup_title");
 const $simpleRestartBtn = $("#js-end-popup_simple-restart-btn");
@@ -30,6 +18,22 @@ const $switchRestartBtn = $("#js-end-popup_switch-restart-btn");
 const $switchRestartText = $("#js-end-popup_switch-restart-text");
 const $toggleDifficultyBtn = $("#js-end-popup_toggle-difficulty-btn");
 const $toggleDifficultyText = $("#js-end-popup_toggle-difficulty-text");
+
+const $fields = {
+
+    a1: $("#js-a1"),
+    a2: $("#js-a2"),
+    a3: $("#js-a3"),
+
+    b1: $("#js-b1"),
+    b2: $("#js-b2"),
+    b3: $("#js-b3"),
+
+    c1: $("#js-c1"),
+    c2: $("#js-c2"),
+    c3: $("#js-c3"),
+
+};
 
 let gameState = {};
 let boardState = {};
@@ -146,7 +150,7 @@ const prepareGame = () => {
 
     // clearing state:
 
-    clearBoardBeforeNewGame(); // needs to run BEFORE clearing state, because it requires data from old state!
+    //clearBoardBeforeNewGame(); // needs to run BEFORE clearing state, because it requires data from old state!
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
     //if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }
@@ -228,7 +232,7 @@ const executePlayerMove = field => {
     const playerSign = gameState.playerSign;
 
     boardState[field] = playerSign; // checking field as marked by player
-    appendSignToField(playerSign, field); // rendering image inside field
+    renderSignInSelectedField(playerSign, field); // rendering image inside field
 
     // after player has made a move, game checks if he won. If not, computer's turn starts:
     checkForVictory() || checkForTie() ? stopGame() : startNewTurn()
@@ -247,7 +251,7 @@ const executeComputerMove = () => {
     gameState.difficulty === "hard" ? field = findFieldToMark() : field = getRandomField();
 
     boardState[field] = computerSign; // checking field as marked by computer
-    appendSignToField(computerSign, field); // rendering image inside field
+    renderSignInSelectedField(computerSign, field); // rendering image inside field
 
     console.log("computer turn ends");
 
@@ -473,49 +477,14 @@ const getRandomField = () => {
 // ************** RENDERING ****************** //
 
 
-const appendSignToField = (sign, field) => {
-
-    switch (field) {
-
-        case "a1":
-            renderSign(sign, $a1);
-            break;
-        case "a2":
-            renderSign(sign, $a2);
-            break;
-        case "a3":
-            renderSign(sign, $a3);
-            break;
-        case "b1":
-            renderSign(sign, $b1);
-            break;
-        case "b2":
-            renderSign(sign, $b2);
-            break;
-        case "b3":
-            renderSign(sign, $b3);
-            break;
-        case "c1":
-            renderSign(sign, $c1);
-            break;
-        case "c2":
-            renderSign(sign, $c2);
-            break;
-        case "c3":
-            renderSign(sign, $c3);
-
-    }
-
-};
-
-const renderSign = (sign, field) => {
+const renderSignInSelectedField = (sign, field) => {
 
     // Cross is always a first child and circle is always a second child
 
     sign === "cross" ?
-        field.children(":first").toggleClass("hidden")
+        $fields[field].children(":first").toggleClass("hidden")
         :
-        field.children(":last").toggleClass("hidden")
+        $fields[field].children(":last").toggleClass("hidden")
 
 };
 
@@ -810,17 +779,17 @@ $(document).ready(() => {
 
     // in-game actions:
 
-    $a1.on("click", () => handleFieldClick("a1"));
-    $a2.on("click", () => handleFieldClick("a2"));
-    $a3.on("click", () => handleFieldClick("a3"));
+    $fields.a1.on("click", () => handleFieldClick("a1"));
+    $fields.a2.on("click", () => handleFieldClick("a2"));
+    $fields.a3.on("click", () => handleFieldClick("a3"));
 
-    $b1.on("click", () => handleFieldClick("b1"));
-    $b2.on("click", () => handleFieldClick("b2"));
-    $b3.on("click", () => handleFieldClick("b3"));
+    $fields.b1.on("click", () => handleFieldClick("b1"));
+    $fields.b2.on("click", () => handleFieldClick("b2"));
+    $fields.b3.on("click", () => handleFieldClick("b3"));
 
-    $c1.on("click", () => handleFieldClick("c1"));
-    $c2.on("click", () => handleFieldClick("c2"));
-    $c3.on("click", () => handleFieldClick("c3"));
+    $fields.c1.on("click", () => handleFieldClick("c1"));
+    $fields.c2.on("click", () => handleFieldClick("c2"));
+    $fields.c3.on("click", () => handleFieldClick("c3"));
 
     // after-game (restart) actions:
 
