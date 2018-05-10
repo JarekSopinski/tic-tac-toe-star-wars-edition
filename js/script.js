@@ -68,6 +68,8 @@ const initialBoardState = {
 
 };
 
+const fieldIDs = Object.keys(initialBoardState);
+
 const victoryCombinations = [
 
     // horizontal:
@@ -297,11 +299,10 @@ const checkForVictory = () => {
 const checkForTie = () => {
 
     let isTie;
-    const fields = Object.keys(boardState);
     const fieldValues = [];
 
-    fields.forEach(field => {
-        boardState[field] ? fieldValues.push("marked") : fieldValues.push("empty")
+    fieldIDs.forEach(fieldID => {
+        boardState[fieldID] ? fieldValues.push("marked") : fieldValues.push("empty")
     });
 
     // if every field is marked, function returns true - a tie has occurred:
@@ -462,8 +463,7 @@ const getRandomField = () => {
 
     console.log("Trying to get random field");
 
-    const fields = Object.keys(boardState);
-    const randomField = fields[Math.floor(Math.random() * fields.length)];
+    const randomField = fieldIDs[Math.floor(Math.random() * fieldIDs.length)];
 
     console.log("random field: " + randomField);
 
@@ -674,17 +674,7 @@ $(document).ready(() => {
 
     // in-game actions:
 
-    $fields.a1.on("click", () => handleFieldClick("a1"));
-    $fields.a2.on("click", () => handleFieldClick("a2"));
-    $fields.a3.on("click", () => handleFieldClick("a3"));
-
-    $fields.b1.on("click", () => handleFieldClick("b1"));
-    $fields.b2.on("click", () => handleFieldClick("b2"));
-    $fields.b3.on("click", () => handleFieldClick("b3"));
-
-    $fields.c1.on("click", () => handleFieldClick("c1"));
-    $fields.c2.on("click", () => handleFieldClick("c2"));
-    $fields.c3.on("click", () => handleFieldClick("c3"));
+    fieldIDs.forEach( fieldID => $fields[fieldID].on("click", () => handleFieldClick(fieldID)) );
 
     // after-game (restart) actions:
 
