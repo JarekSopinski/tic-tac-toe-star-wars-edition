@@ -148,7 +148,7 @@ const prepareGame = () => {
 
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
-    // TODO: restore hidden class on all signs
+    if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }
 
     // restoring saved values to state:
 
@@ -631,6 +631,52 @@ const displayEndPopup = () => {
     difficulty === "easy" ? $toggleDifficultyText.text(endPopupSwitchToHard) : $toggleDifficultyText.text(endPopupSwitchToEasy);
 
     $endPopup.toggleClass("hidden")
+
+};
+
+const clearBoardBeforeNewGame = () => {
+    // restoring hidden class to all signs before starting a new game
+
+    const fields = Object.keys(boardState);
+    fields.forEach(field => {
+        // hide sign in field is already marked:
+        if (boardState[field]) { hideSign(field) }
+    })
+
+};
+
+const hideSign = (field) => {
+
+    switch (field) {
+
+        case "a1":
+            $a1.toggleClass("hidden");
+            break;
+        case "a2":
+            $a2.toggleClass("hidden");
+            break;
+        case "a3":
+            $a3.toggleClass("hidden");
+            break;
+        case "b1":
+            $b1.toggleClass("hidden");
+            break;
+        case "b2":
+            $b2.toggleClass("hidden");
+            break;
+        case "b3":
+            $b3.toggleClass("hidden");
+            break;
+        case "c1":
+            $c1.toggleClass("hidden");
+            break;
+        case "c2":
+            $c2.toggleClass("hidden");
+            break;
+        case "c3":
+            $c3.toggleClass("hidden")
+
+    }
 
 };
 
