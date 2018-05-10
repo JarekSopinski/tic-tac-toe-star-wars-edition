@@ -787,7 +787,7 @@ const handleRestartBtn = (isSignSwitched) => {
 
     switch (isSignSwitched) {
         case "playerSwitchedSign":
-            gameState.playerSign === "cross" ? gameState.playerSign = "circle" : gameState.computerSign = "cross";
+            gameState.playerSign === "cross" ? gameState.playerSign = "circle" : gameState.playerSign = "cross";
             prepareGame();
             break;
         case "playerDidNotSwitchSign":
