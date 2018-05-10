@@ -146,9 +146,10 @@ const prepareGame = () => {
 
     // clearing state:
 
+    clearBoardBeforeNewGame(); // needs to run BEFORE clearing state, because it requires data from old state!
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
-    if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }
+    //if (gameState.gameCount > 0) { clearBoardBeforeNewGame() }
 
     // restoring saved values to state:
 
@@ -650,31 +651,67 @@ const hideSign = (field) => {
     switch (field) {
 
         case "a1":
-            $a1.toggleClass("hidden");
+            boardState.a1 === "cross" ?
+                $a1.children(":first").toggleClass("hidden")
+                :
+                $a1.children(":last").toggleClass("hidden");
             break;
+
         case "a2":
-            $a2.toggleClass("hidden");
+            boardState.a2 === "cross" ?
+                $a2.children(":first").toggleClass("hidden")
+                :
+                $a2.children(":last").toggleClass("hidden");
             break;
+
         case "a3":
-            $a3.toggleClass("hidden");
+            boardState.a3 === "cross" ?
+                $a3.children(":first").toggleClass("hidden")
+                :
+                $a3.children(":last").toggleClass("hidden");
             break;
+
         case "b1":
-            $b1.toggleClass("hidden");
+            boardState.b1 === "cross" ?
+                $b1.children(":first").toggleClass("hidden")
+                :
+                $b1.children(":last").toggleClass("hidden");
             break;
+
         case "b2":
-            $b2.toggleClass("hidden");
+            boardState.b2 === "cross" ?
+                $b2.children(":first").toggleClass("hidden")
+                :
+                $b2.children(":last").toggleClass("hidden");
             break;
+
         case "b3":
-            $b3.toggleClass("hidden");
+            boardState.b3 === "cross" ?
+                $b3.children(":first").toggleClass("hidden")
+                :
+                $b3.children(":last").toggleClass("hidden");
             break;
+
         case "c1":
-            $c1.toggleClass("hidden");
+            boardState.c1 === "cross" ?
+                $c1.children(":first").toggleClass("hidden")
+                :
+                $c1.children(":last").toggleClass("hidden");
             break;
+
         case "c2":
-            $c2.toggleClass("hidden");
+            boardState.c2 === "cross" ?
+                $c2.children(":first").toggleClass("hidden")
+                :
+                $c2.children(":last").toggleClass("hidden");
             break;
+
         case "c3":
-            $c3.toggleClass("hidden")
+            boardState.c3 === "cross" ?
+                $c3.children(":first").toggleClass("hidden")
+                :
+                $c3.children(":last").toggleClass("hidden");
+            break;
 
     }
 
@@ -724,6 +761,23 @@ const toggleDifficulty = () => {
 
 };
 
+const handleRestartBtn = (isSignSwitched) => {
+
+    $endPopup.toggleClass("hidden");
+
+    switch (isSignSwitched) {
+        case "playerSwitchedSign":
+            gameState.playerSign === "cross" ? gameState.playerSign = "circle" : gameState.computerSign = "cross";
+            prepareGame();
+            break;
+        case "playerDidNotSwitchSign":
+            prepareGame()
+    }
+
+};
+
+
+
 $(document).ready(() => {
 
     // initial settings actions:
@@ -750,7 +804,9 @@ $(document).ready(() => {
 
     // after-game (restart) actions:
 
-    $toggleDifficultyBtn.on("click", toggleDifficulty)
+    $simpleRestartBtn.on("click", () => handleRestartBtn("playerDidNotSwitchSign"));
+    $switchRestartBtn.on("click", () => handleRestartBtn("playerSwitchedSign"));
+    $toggleDifficultyBtn.on("click", toggleDifficulty);
 
 });
 
