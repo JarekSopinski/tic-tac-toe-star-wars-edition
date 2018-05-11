@@ -107,7 +107,7 @@ $normal-font: 'Montserrat', sans-serif;
 
 .game-screen_status {
   margin-bottom: 20px;
-  min-height: 60px;
+  min-height: 80px;
 }
 
 .status_text--quote {
@@ -152,7 +152,7 @@ $normal-font: 'Montserrat', sans-serif;
 .end-popup {
   z-index: 2;
   position: absolute;
-  top: -20px;
+  top: -150px;
   left: 50px;
   max-width: 150px;
   padding: 20px;
@@ -257,6 +257,10 @@ $normal-font: 'Montserrat', sans-serif;
 
   .header_title--subtitle {
     font-size: 40px;
+  }
+
+  .game-screen_status {
+    min-height: 0;
   }
 
   .status_text--quote {

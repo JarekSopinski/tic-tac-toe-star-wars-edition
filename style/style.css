@@ -79,7 +79,7 @@
 
 .game-screen_status {
   margin-bottom: 20px;
-  min-height: 60px; }
+  min-height: 80px; }
 
 .status_text--quote {
   margin-bottom: 5px;
@@ -121,7 +121,7 @@
 .end-popup {
   z-index: 2;
   position: absolute;
-  top: -20px;
+  top: -150px;
   left: 50px;
   max-width: 150px;
   padding: 20px;
@@ -223,6 +223,9 @@
 
   .header_title--subtitle {
     font-size: 40px; }
+
+  .game-screen_status {
+    min-height: 0; }
 
   .status_text--quote {
     font-size: 25px; }
