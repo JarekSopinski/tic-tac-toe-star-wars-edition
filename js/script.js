@@ -162,14 +162,8 @@ const circleRedColor = "rgba(157,43,33,0.7)";
 
 const prepareGame = () => {
 
-    console.log("Started preparing new game");
-
-    // saving values from initial settings and, in case of restart, previous game, before clearing state:
-
     const playerSign = gameState.playerSign;
     const difficulty = gameState.difficulty;
-
-    // saving winner of previous game - value will be used in chooseWhoPlaysFirst() callback:
 
     let winnerOfLastGame;
 
@@ -178,32 +172,20 @@ const prepareGame = () => {
         :
         winnerOfLastGame = gameState.winner;
 
-    // clearing state:
-
-    if (counter.gameCounter > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
+    if (counter.gameCounter > 0) { clearBoardBeforeNewGame() }
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
 
-    // restoring saved values to state:
-
     gameState.playerSign = playerSign;
     gameState.difficulty = difficulty;
-
-    // setting computer sign:
     gameState.playerSign === "cross" ? gameState.computerSign = "circle" : gameState.computerSign = "cross";
 
-    // deciding who plays first:
     chooseWhoPlaysFirst(winnerOfLastGame);
-
-    // starting first move, depending on turn decided in chooseWhoPlaysFirst():
     startGame()
 
 };
 
 const chooseWhoPlaysFirst = (winnerOfLastGame) => {
-
-    // In case there is no winner, first players is chosen randomly.
-    // Otherwise, first player is the winner of previous game:
 
     switch (winnerOfLastGame) {
         case "noWinner":
@@ -238,7 +220,6 @@ const startGame = () => {
 
 
 const startNewTurn = () => {
-    // toggles turn and displays new turn status; in case of computer also runs move function
 
     switch (gameState.turn) {
 
@@ -246,31 +227,24 @@ const startNewTurn = () => {
             gameState.turn = "computer";
             gameState.signInCurrentTurn = gameState.computerSign;
             displayTurnMessage();
-            setTimeout(executeComputerMove, 1000); // timeOut to simulate that computer "thinks" about the move
+            setTimeout(executeComputerMove, 1000);
             break;
 
         case "computer":
             gameState.turn = "player";
             gameState.signInCurrentTurn = gameState.playerSign;
             displayTurnMessage();
-            // opposing to first case, we don't run handle(...)Move from here
-            // in case of player, it's an event listener callback!
 
     }
 
 };
 
 const executePlayerMove = field => {
-    // runs as a callback from handleFieldClick() event listener
 
     const playerSign = gameState.playerSign;
 
-    boardState[field] = playerSign; // checking field as marked by player
-    displaySignInSelectedField(playerSign, field); // rendering image inside field
-
-    // After player has made a move, game checks if he won.
-    // If not, game checks for a tie.
-    // If both checks fail, game continues.
+    boardState[field] = playerSign;
+    displaySignInSelectedField(playerSign, field);
 
     if (checkForVictory()) { stopGame() }
     else if (checkForTie()) { stopGame() }
@@ -279,24 +253,13 @@ const executePlayerMove = field => {
 };
 
 const executeComputerMove = () => {
-    // find field to mark, mark it, then victory / tie or new turn
-
-    console.log("computer turn starts");
 
     const computerSign = gameState.computerSign;
-
-    // In hard difficulty, computer executes all moves. In easy, it always chooses random field:
     let field;
     gameState.difficulty === "hard" ? field = findFieldToMark() : field = getRandomField();
 
-    boardState[field] = computerSign; // checking field as marked by computer
-    displaySignInSelectedField(computerSign, field); // rendering image inside field
-
-    console.log("computer turn ends");
-
-    // After computer has made a move, game checks if he won.
-    // If not, game checks for a tie.
-    // If both checks fail, game continues.
+    boardState[field] = computerSign;
+    displaySignInSelectedField(computerSign, field);
 
     if (checkForVictory()) { stopGame() }
     else if (checkForTie()) { stopGame() }
@@ -305,17 +268,10 @@ const executeComputerMove = () => {
 };
 
 const checkForVictory = () => {
-    // runs at the end of each turn, after move by player or computer has been made
 
     let isVictory = false;
 
     victoryCombinations.forEach(combination => {
-
-        // Each combo array has 3 fields. We have to check if all of them have the same mark.
-        // For example, in horizontal combo: combination[0] = boardState.a1, combination[1] = boardState.a2...
-
-        // Checks need to run on boardState, not on victoryCombinations array - this array is not modified during game!
-        // Therefore we use values from combos array to check correct keys in boardState object:
 
         const A = combination[0];
         const B = combination[1];
@@ -325,13 +281,12 @@ const checkForVictory = () => {
             && boardState[B] === gameState.signInCurrentTurn
             && boardState[C] === gameState.signInCurrentTurn) {
 
-            console.log("victory");
             isVictory = true;
-            gameState.winner = gameState.turn; // the "owner" of final turn is the winner
+            gameState.winner = gameState.turn;
             gameState.winnerSign = gameState.signInCurrentTurn;
-            gameState.victoryFields.push(...[A, B, C]) // will be used by fillVictoryCombinationWithColor()
+            gameState.victoryFields.push(...[A, B, C])
 
-        } else { console.log("no victory") }
+        }
 
     });
 
@@ -348,9 +303,8 @@ const checkForTie = () => {
         boardState[fieldID] ? fieldValues.push("marked") : fieldValues.push("empty")
     });
 
-    // if every field is marked, function returns true - a tie has occurred:
     isTie = fieldValues.every(field => field === "marked");
-    console.log("Is a tie? " + isTie);
+
     if (isTie) {
         gameState.winner = "tie";
         gameState.winnerSign = "tie"
@@ -361,12 +315,9 @@ const checkForTie = () => {
 };
 
 const stopGame = () => {
-    // runs if checkForVictory returns true or in case of a draw
 
-    console.log("Game has ended");
-    gameState.turn = "gameOver"; // this will prevent any further moves by the player
+    gameState.turn = "gameOver";
     updateCounter();
-
     fillVictoryCombinationWithColor();
     displayTurnMessage();
     displayResults();
@@ -384,8 +335,6 @@ const updateCounter = () => {
     if (gameState.winnerSign === "cross") { counter.crossWins++ }
     else if (gameState.winnerSign === "circle") { counter.circleWins++ }
 
-    // These conditionals can't be simplified to ternary because of possibility of a tie
-
 };
 
 
@@ -393,14 +342,6 @@ const updateCounter = () => {
 
 
 const findFieldToMark = () => {
-
-    /*
-    Computer runs 3 checks:
-    1) If it can get a win in this turn;
-    2) If enemy has to be blocked (or enemy will win next turn);
-    3) Looks for a field in a column or row where it already has one mark and two other fields are empty;
-    If all checks failed, it marks random field.
-     */
 
     let fieldToMark;
 
@@ -415,7 +356,6 @@ const findFieldToMark = () => {
         fieldToMark = getRandomField();
     }
 
-    console.log("decided to mark: " + fieldToMark);
     return fieldToMark
 
 };
@@ -425,21 +365,13 @@ const tryToWinOrToBlock = (actionType) => {
     const fieldsToMark = [];
     let sign;
 
-    // actionType can be "win" (first step in computer's logic) - in that case function operates on computer sign
-    // or "block" (second step) - in that case function operates on player's sign:
-
     actionType === "win" ? sign = gameState.computerSign : sign = gameState.playerSign;
-
-    console.log(actionType + " " + sign);
 
     victoryCombinations.forEach(combination => {
 
         const A = combination[0];
         const B = combination[1];
         const C = combination[2];
-
-        // Computer checks if there is a row or column in which there is only one missing field.
-        // If so, this field is the function's result (field's name, taken from an array, not a value from state!).
 
         if (boardState[A] === sign && boardState[B] === sign) {
             fieldsToMark.push(C)
@@ -449,42 +381,17 @@ const tryToWinOrToBlock = (actionType) => {
             fieldsToMark.push(A)
         }
 
-    }); // end of iteration
-
-    console.log("fields to mark: " + fieldsToMark);
-
-    /*
-    There are rare cases when computer will get two fields for winning or blocking. If we didn't save fields
-    to an array, we would only get the last field. Then, this field could be dismissed at the final check below,
-    because it could be already marked. Then the first, potentially correct field would not be marked and computer
-    would lose an opportunity for a correct move!
-
-    To prevent this mistake we need to save fields to an array and then run a check for marked fields by filtering
-    this array. Than we return first index. If there was no correct result, this will be undefined, and the function will
-    evaluate to false, as it should. If there were two correct results (very rare, but possible), than it doesn't matter,
-    if we choose first or second. The final case of one correct result is obvious.
-     */
+    });
 
     const freeFieldsToMark = fieldsToMark.filter(field => { return !boardState[field] });
-
-    console.log("free fields to mark: " + freeFieldsToMark);
-
     return freeFieldsToMark[0]
 
-
-    // If all checks failed, function will return false, and findFieldToMarkByComputer() can execute next check based on this.
-    // Otherwise, correct field is returned and passed to findFieldToMarkByComputer(), which returns this as its own result.
 };
 
 const markSecondField = () => {
 
-    // This move is executed if there is a row or a column with one field marked by computer and two empty fields.
-    // In that case computer will try to add 2nd field and continue building 3-field win combo.
-
     const fieldsToMark = [];
     const sign = gameState.computerSign;
-
-    console.log("Trying markSecondField move");
 
     victoryCombinations.forEach(combination => {
 
@@ -508,24 +415,15 @@ const markSecondField = () => {
             fieldsToMark.push(B)
         }
 
-    }); // end of iteration
+    });
 
-    console.log("Empty fields: " + fieldsToMark);
-
-    // Computer can choose random field from the results. It could always choose first index, but this is better for game variation:
     return fieldsToMark[Math.floor(Math.random() * fieldsToMark.length)];
 
 };
 
 const getRandomField = () => {
 
-    console.log("Trying to get random field");
-
     const randomField = fieldIDs[Math.floor(Math.random() * fieldIDs.length)];
-
-    console.log("random field: " + randomField);
-
-    // if field was already marked, recursion is used - function calls itself back, until if finds an empty field:
     return boardState[randomField] ? getRandomField() : randomField
 
 };
@@ -535,8 +433,6 @@ const getRandomField = () => {
 
 
 const displaySignInSelectedField = (sign, field) => {
-
-    // Cross is always a first child and circle is always a second child
 
     sign === "cross" ?
         $fields[field].children(":first").toggleClass("hidden")
@@ -630,23 +526,17 @@ const displayEndPopup = () => {
 };
 
 const clearBoardBeforeNewGame = () => {
-    // restoring hidden class to all signs before starting a new game
 
     const fields = Object.keys(boardState);
     fields.forEach(field => {
-        // hide sign in field is already marked:
         if (boardState[field]) { hideSignInMarkedField(field) }
     });
-
-    // also, if last game didn't end in a tie, winning bg colors have to be cleared:
 
     if (gameState.winner !== "tie") { removeFieldsBgColors() }
 
 };
 
 const hideSignInMarkedField = (field) => {
-
-    // Cross is always a first child and circle is always a second child
 
     boardState[field] === "cross" ?
         $fields[field].children(":first").toggleClass("hidden")
@@ -696,7 +586,6 @@ const setInitialDifficulty = difficulty => {
 };
 
 const handleFieldClick = field => {
-    // check if field is empty and if it's player's turn - if so, execute player's move:
     if (!boardState[field] && gameState.turn === "player") { executePlayerMove(field) }
 };
 
@@ -731,11 +620,7 @@ const handleRestartBtn = (isSignSwitched) => {
 
 };
 
-
-
 $(document).ready(() => {
-
-    // initial settings actions:
 
     $chooseCross.on("click", () => setInitialSign("cross"));
     $chooseCircle.on("click", () => setInitialSign("circle"));
@@ -743,11 +628,7 @@ $(document).ready(() => {
     $chooseHard.on("click", () => setInitialDifficulty("hard"));
     $chooseEasy.on("click", () => setInitialDifficulty("easy"));
 
-    // in-game actions:
-
     fieldIDs.forEach( fieldID => $fields[fieldID].on("click", () => handleFieldClick(fieldID)) );
-
-    // after-game (restart) actions:
 
     $simpleRestartBtn.on("click", () => handleRestartBtn("playerDidNotSwitchSign"));
     $switchRestartBtn.on("click", () => handleRestartBtn("playerSwitchedSign"));
