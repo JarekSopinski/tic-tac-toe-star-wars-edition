@@ -95,6 +95,7 @@
   text-align: center; }
 
 .game-screen_board {
+  position: relative;
   display: block;
   margin: auto;
   width: 300px; }
@@ -117,45 +118,51 @@
 
 .end-popup {
   z-index: 2;
-  position: fixed;
-  top: 40vh;
-  left: 40vh;
-  min-width: 500px;
+  position: absolute;
+  top: -20px;
+  left: 50px;
+  max-width: 150px;
   padding: 20px;
   background-color: #787878;
-  border: 5px solid #FFE81F;
-  border-radius: 20px; }
+  border: 2px solid #FFE81F;
+  border-radius: 10px; }
 
 .end-popup_title {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   font-family: "Montserrat", sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   color: #FFE81F;
   text-align: center; }
 
 .end-popup_button {
-  width: 90%;
   display: block;
   margin: auto;
+  width: 90%;
   padding: 10px;
   border: 2px solid #FFE81F;
   cursor: pointer; }
+
+.end-popup_button:hover {
+  border-color: #FB5607; }
 
 .end-popup_button--difficulty {
   width: 90%;
   display: block;
-  margin: 50px auto 0 auto;
+  margin: 40px auto 0 auto;
   padding: 10px;
   border: 2px solid #FFE81F;
   cursor: pointer; }
 
+.end-popup_button--difficulty:hover {
+  border-color: #FB5607; }
+
 .end-popup_button_text {
-  font-family: "Montserrat", sans-serif;
-  font-size: 20px;
-  color: #FFE81F;
-  text-align: center;
   display: block;
-  margin: auto; }
+  margin: auto;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  color: #FFE81F;
+  text-align: center; }
 
 .end-popup_middle-text {
   display: block;

@@ -19,7 +19,7 @@
 <!--SETTINGS: CHOOSE SIDE-->
 
 <div id="js-settings-screen"
-     class="settings">
+     class="settings hidden">
 
     <h3 class="settings_title">Are you a Jedi or a Sith?</h3>
 
@@ -69,7 +69,7 @@
 <!--GAME BOARD-->
 
 <div id="js-game-screen"
-     class="game-screen hidden">
+     class="game-screen">
 
     <div class="game-screen_status">
         <h3 id="js-turn-quote" class="status_text--quote"></h3>
@@ -135,28 +135,28 @@
 
         </div>
 
-    </div>
+        <!--GAME OVER POPUP-->
 
-</div>
+        <div id="js-end-popup" class="end-popup">
 
-<!--GAME OVER POPUP-->
+            <h3 id="js-end-popup_title" class="end-popup_title">Light side prevails!</h3>
 
-<div id="js-end-popup" class="end-popup hidden">
+            <div id="js-end-popup_simple-restart-btn" class="end-popup_button">
+                <span id="js-end-popup_simple-restart-text" class="end-popup_button_text">Try again as a Jedi...</span>
+            </div>
 
-    <h3 id="js-end-popup_title" class="end-popup_title"></h3>
+            <span class="end-popup_middle-text">or</span>
 
-    <div id="js-end-popup_simple-restart-btn" class="end-popup_button">
-        <span id="js-end-popup_simple-restart-text" class="end-popup_button_text"></span>
-    </div>
+            <div id = "js-end-popup_switch-restart-btn" class="end-popup_button">
+                <span id="js-end-popup_switch-restart-text" class="end-popup_button_text">...turn to the Dark Side!</span>
+            </div>
 
-    <span class="end-popup_middle-text">or</span>
+            <div id = "js-end-popup_toggle-difficulty-btn" class="end-popup_button--difficulty">
+                <span id="js-end-popup_toggle-difficulty-text" class="end-popup_button_text">Change difficulty to easy?</span>
+            </div>
 
-    <div id = "js-end-popup_switch-restart-btn" class="end-popup_button">
-        <span id="js-end-popup_switch-restart-text" class="end-popup_button_text"></span>
-    </div>
+        </div>
 
-    <div id = "js-end-popup_toggle-difficulty-btn" class="end-popup_button--difficulty">
-        <span id="js-end-popup_toggle-difficulty-text" class="end-popup_button_text"></span>
     </div>
 
 </div>
