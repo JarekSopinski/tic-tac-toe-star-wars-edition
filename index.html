@@ -72,8 +72,17 @@
      class="game-screen hidden">
 
     <div class="game-screen_status">
-        <h3 id="js-turn-quote" class="status_text--quote"></h3>
-        <h4 id="js-turn-hint" class="status_text--hint"></h4>
+
+        <h3 id="js-turn-quote"
+            class="status_text--quote">
+            Turn message
+        </h3>
+
+        <h4 id="js-turn-hint"
+            class="status_text--hint">
+            Turn hint
+        </h4>
+
     </div>
 
     <div class="game-screen_board">
@@ -137,22 +146,40 @@
 
         <!--GAME OVER POPUP-->
 
-        <div id="js-end-popup" class="end-popup hidden">
+        <div id="js-end-popup"
+             class="end-popup hidden">
 
-            <h3 id="js-end-popup_title" class="end-popup_title">Light side prevails!</h3>
+            <h3 id="js-end-popup_title"
+                class="end-popup_title">
+                Who won message
+            </h3>
 
-            <div id="js-end-popup_simple-restart-btn" class="end-popup_button">
-                <span id="js-end-popup_simple-restart-text" class="end-popup_button_text">Try again as a Jedi...</span>
+            <div id="js-end-popup_simple-restart-btn"
+                 class="end-popup_button">
+                <span id="js-end-popup_simple-restart-text"
+                      class="end-popup_button_text">
+                    Restart with the same sign message
+                </span>
             </div>
 
-            <span class="end-popup_middle-text">or</span>
+            <span class="end-popup_middle-text">
+                or
+            </span>
 
-            <div id = "js-end-popup_switch-restart-btn" class="end-popup_button">
-                <span id="js-end-popup_switch-restart-text" class="end-popup_button_text">...turn to the Dark Side!</span>
+            <div id = "js-end-popup_switch-restart-btn"
+                 class="end-popup_button">
+                <span id="js-end-popup_switch-restart-text"
+                      class="end-popup_button_text">
+                    Restart with switched sign message
+                </span>
             </div>
 
-            <div id = "js-end-popup_toggle-difficulty-btn" class="end-popup_button--difficulty">
-                <span id="js-end-popup_toggle-difficulty-text" class="end-popup_button_text">Change difficulty to easy?</span>
+            <div id = "js-end-popup_toggle-difficulty-btn"
+                 class="end-popup_button--difficulty">
+                <span id="js-end-popup_toggle-difficulty-text"
+                      class="end-popup_button_text">
+                    Change difficulty message
+                </span>
             </div>
 
         </div>

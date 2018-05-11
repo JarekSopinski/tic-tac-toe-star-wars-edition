@@ -137,17 +137,21 @@ const tieQuotes = [
     "These aren’t the droids you’re looking for!"
 ];
 
-const endPopupCrossWinTitle = "Light side prevails!";
-const endPopupCircleWinTitle = "Dark side prevails!";
-const endPopupTieTitle = "The force remains in a balance.";
-const endPopupContinueAsCross = "Try again as a Jedi...";
-const endPopupContinueAsCircle = "Try again as a Sith...";
-const endPopupSwitchToCircle = "...turn to the Dark Side!";
-const endPopupSwitchToCross = "...turn to the Light Side!";
-const endPopupSwitchToEasy = "Change difficulty to easy?";
-const endPopupSwitchToHard = "Change difficulty to hard?";
-const endPopupSwitchedToHard = "Impressive. Most impressive. (set to hard!)";
-const endPopupSwitchedToEasy = "Han my boy, you disappoint me. (set to easy!)";
+const endPopupMessages = {
+
+    crossWinTitle: "Light side prevails!",
+    circleWinTitle: "Dark side prevails!",
+    tieTitle: "The force remains in a balance.",
+    continueAsCross: "Try again as a Jedi...",
+    continueAsCircle: "Try again as a Sith...",
+    switchToCircle: "...turn to the Dark Side!",
+    switchToCross: "...turn to the Light Side!",
+    switchToEasy: "Change difficulty to easy?",
+    switchToHard: "Change difficulty to hard?",
+    switchedToHard: "Impressive. Most impressive. (set to hard!)",
+    switchedToEasy: "Han my boy, you disappoint me. (set to easy!)"
+
+};
 
 const crossBlueColor = "rgba(7,110,176,0.7)";
 const circleRedColor = "rgba(157,43,33,0.7)";
@@ -220,12 +224,12 @@ const startGame = () => {
   switch (gameState.turn) {
       case "player":
           gameState.signInCurrentTurn = gameState.playerSign;
-          renderMessage();
+          displayTurnMessage();
           $resultsGameCounter.text(`Round: ${counter.gameCounter + 1}`);
           break;
       case "computer":
           gameState.signInCurrentTurn = gameState.computerSign;
-          renderMessage();
+          displayTurnMessage();
           $resultsGameCounter.text(`Round: ${counter.gameCounter + 1}`);
           setTimeout(executeComputerMove, 1000);
   }
@@ -241,14 +245,14 @@ const startNewTurn = () => {
         case "player":
             gameState.turn = "computer";
             gameState.signInCurrentTurn = gameState.computerSign;
-            renderMessage();
+            displayTurnMessage();
             setTimeout(executeComputerMove, 1000); // timeOut to simulate that computer "thinks" about the move
             break;
 
         case "computer":
             gameState.turn = "player";
             gameState.signInCurrentTurn = gameState.playerSign;
-            renderMessage();
+            displayTurnMessage();
             // opposing to first case, we don't run handle(...)Move from here
             // in case of player, it's an event listener callback!
 
@@ -262,7 +266,7 @@ const executePlayerMove = field => {
     const playerSign = gameState.playerSign;
 
     boardState[field] = playerSign; // checking field as marked by player
-    renderSignInSelectedField(playerSign, field); // rendering image inside field
+    displaySignInSelectedField(playerSign, field); // rendering image inside field
 
     // After player has made a move, game checks if he won.
     // If not, game checks for a tie.
@@ -275,7 +279,7 @@ const executePlayerMove = field => {
 };
 
 const executeComputerMove = () => {
-    // find field to mark, mark it, then victory or new turn
+    // find field to mark, mark it, then victory / tie or new turn
 
     console.log("computer turn starts");
 
@@ -286,7 +290,7 @@ const executeComputerMove = () => {
     gameState.difficulty === "hard" ? field = findFieldToMark() : field = getRandomField();
 
     boardState[field] = computerSign; // checking field as marked by computer
-    renderSignInSelectedField(computerSign, field); // rendering image inside field
+    displaySignInSelectedField(computerSign, field); // rendering image inside field
 
     console.log("computer turn ends");
 
@@ -313,21 +317,21 @@ const checkForVictory = () => {
         // Checks need to run on boardState, not on victoryCombinations array - this array is not modified during game!
         // Therefore we use values from combos array to check correct keys in boardState object:
 
-        const comboFieldA = combination[0];
-        const comboFieldB = combination[1];
-        const comboFieldC = combination[2];
+        const A = combination[0];
+        const B = combination[1];
+        const C = combination[2];
 
-        if (boardState[comboFieldA] === gameState.signInCurrentTurn
-            && boardState[comboFieldB] === gameState.signInCurrentTurn
-            && boardState[comboFieldC] === gameState.signInCurrentTurn) {
+        if (boardState[A] === gameState.signInCurrentTurn
+            && boardState[B] === gameState.signInCurrentTurn
+            && boardState[C] === gameState.signInCurrentTurn) {
 
             console.log("victory");
             isVictory = true;
             gameState.winner = gameState.turn; // the "owner" of final turn is the winner
             gameState.winnerSign = gameState.signInCurrentTurn;
-            gameState.victoryFields.push(...[comboFieldA, comboFieldB, comboFieldC]) // will be used by fillVictoryCombinationWithColor()
+            gameState.victoryFields.push(...[A, B, C]) // will be used by fillVictoryCombinationWithColor()
 
-        } else { console.log("no victory") } // TODO: else cond. only for development
+        } else { console.log("no victory") }
 
     });
 
@@ -364,7 +368,7 @@ const stopGame = () => {
     updateCounter();
 
     fillVictoryCombinationWithColor();
-    renderMessage();
+    displayTurnMessage();
     displayResults();
     setTimeout(displayEndPopup, 2000);
 
@@ -391,11 +395,11 @@ const updateCounter = () => {
 const findFieldToMark = () => {
 
     /*
-    Computer runs 2 checks:
+    Computer runs 3 checks:
     1) If it can get a win in this turn;
     2) If enemy has to be blocked (or enemy will win next turn);
-    If both failed, it marks a field in a column or row where it already has one mark and two other fields are empty;
-    Otherwise, it marks random field.
+    3) Looks for a field in a column or row where it already has one mark and two other fields are empty;
+    If all checks failed, it marks random field.
      */
 
     let fieldToMark;
@@ -530,7 +534,7 @@ const getRandomField = () => {
 // ************** RENDERING ****************** //
 
 
-const renderSignInSelectedField = (sign, field) => {
+const displaySignInSelectedField = (sign, field) => {
 
     // Cross is always a first child and circle is always a second child
 
@@ -541,7 +545,7 @@ const renderSignInSelectedField = (sign, field) => {
 
 };
 
-const renderMessage = () => {
+const displayTurnMessage = () => {
 
     if (gameState.turn === "player") {
         $turnQuote.text(playerTurnQuote);
@@ -593,30 +597,33 @@ const displayEndPopup = () => {
 
     switch (winnerSign) {
         case "cross":
-            $endPopupTitle.text(endPopupCrossWinTitle);
+            $endPopupTitle.text(endPopupMessages.crossWinTitle);
             break;
         case "circle":
-            $endPopupTitle.text(endPopupCircleWinTitle);
+            $endPopupTitle.text(endPopupMessages.circleWinTitle);
             break;
         case "tie":
-            $endPopupTitle.text(endPopupTieTitle)
+            $endPopupTitle.text(endPopupMessages.tieTitle)
     }
 
     switch (playerSign) {
         case "cross":
-            $simpleRestartText.text(endPopupContinueAsCross);
-            $switchRestartText.text(endPopupSwitchToCircle);
+            $simpleRestartText.text(endPopupMessages.continueAsCross);
+            $switchRestartText.text(endPopupMessages.switchToCircle);
             $simpleRestartBtn.css('background-color', crossBlueColor);
             $switchRestartBtn.css('background-color', circleRedColor);
             break;
         case "circle":
-            $simpleRestartText.text(endPopupContinueAsCircle);
-            $switchRestartText.text(endPopupSwitchToCross);
+            $simpleRestartText.text(endPopupMessages.continueAsCircle);
+            $switchRestartText.text(endPopupMessages.switchToCross);
             $simpleRestartBtn.css('background-color', circleRedColor);
             $switchRestartBtn.css('background-color', crossBlueColor);
     }
 
-    difficulty === "easy" ? $toggleDifficultyText.text(endPopupSwitchToHard) : $toggleDifficultyText.text(endPopupSwitchToEasy);
+    difficulty === "easy" ?
+        $toggleDifficultyText.text(endPopupMessages.switchToHard)
+        :
+        $toggleDifficultyText.text(endPopupMessages.switchToEasy);
 
     $endPopup.toggleClass("hidden")
 
@@ -699,12 +706,12 @@ const toggleDifficulty = () => {
         case "easy":
             gameState.difficulty = "hard";
             $toggleDifficultyText.empty();
-            $toggleDifficultyText.text(endPopupSwitchedToHard);
+            $toggleDifficultyText.text(endPopupMessages.switchedToHard);
             break;
         case "hard":
             gameState.difficulty = "easy";
             $toggleDifficultyText.empty();
-            $toggleDifficultyText.text(endPopupSwitchedToEasy)
+            $toggleDifficultyText.text(endPopupMessages.switchedToEasy)
     }
 
 };
@@ -747,4 +754,3 @@ $(document).ready(() => {
     $toggleDifficultyBtn.on("click", toggleDifficulty);
 
 });
-
