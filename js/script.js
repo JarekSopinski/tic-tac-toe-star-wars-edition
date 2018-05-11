@@ -19,6 +19,13 @@ const $switchRestartText = $("#js-end-popup_switch-restart-text");
 const $toggleDifficultyBtn = $("#js-end-popup_toggle-difficulty-btn");
 const $toggleDifficultyText = $("#js-end-popup_toggle-difficulty-text");
 
+const $results = $("#js-results");
+const $resultsGameCounter = $("#js-results-game-counter");
+const $resultsJediWins = $("#js-results-jedi-wins");
+const $resultsSithWins = $("#js-results-sith-wins");
+const $resultsPlayerWins = $("#js-results-player-wins");
+const $resultsComputerWins = $("#js-results-computer-wins");
+
 const $fields = {
 
     a1: $("#js-a1"),
@@ -67,7 +74,15 @@ const initialBoardState = {
 
 };
 
-let gameCounter = 0;
+const counter = {
+
+    gameCounter: 0,
+    crossWins: 0,
+    circleWins: 0,
+    playerWins: 0,
+    computerWins: 0
+
+};
 
 const fieldIDs = Object.keys(initialBoardState);
 
@@ -154,14 +169,14 @@ const prepareGame = () => {
 
     let winnerOfLastGame;
 
-    gameCounter === 0 || gameState.winner === "tie" ?
+    counter.gameCounter === 0 || gameState.winner === "tie" ?
         winnerOfLastGame = "noWinner"
         :
         winnerOfLastGame = gameState.winner;
 
     // clearing state:
 
-    if (gameCounter > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
+    if (counter.gameCounter > 0) { clearBoardBeforeNewGame() }  // needs to run BEFORE clearing state, because it requires data from old state!
     gameState = $.extend(true, {}, initialGameState);
     boardState = $.extend(true, {}, initialBoardState);
 
@@ -206,10 +221,12 @@ const startGame = () => {
       case "player":
           gameState.signInCurrentTurn = gameState.playerSign;
           renderMessage();
+          $resultsGameCounter.text(`Round: ${counter.gameCounter + 1}`);
           break;
       case "computer":
           gameState.signInCurrentTurn = gameState.computerSign;
           renderMessage();
+          $resultsGameCounter.text(`Round: ${counter.gameCounter + 1}`);
           setTimeout(executeComputerMove, 1000);
   }
 
@@ -344,11 +361,26 @@ const stopGame = () => {
 
     console.log("Game has ended");
     gameState.turn = "gameOver"; // this will prevent any further moves by the player
-    gameCounter++;
+    updateCounter();
 
     fillVictoryCombinationWithColor();
     renderMessage();
+    displayResults();
     setTimeout(displayEndPopup, 2000);
+
+};
+
+const updateCounter = () => {
+
+    counter.gameCounter++;
+
+    if (gameState.winner === "player") { counter.playerWins++ }
+    else if (gameState.winner === "computer") { counter.computerWins++ }
+
+    if (gameState.winnerSign === "cross") { counter.crossWins++ }
+    else if (gameState.winnerSign === "circle") { counter.circleWins++ }
+
+    // These conditionals can't be simplified to ternary because of possibility of a tie
 
 };
 
@@ -623,6 +655,15 @@ const removeFieldsBgColors = () => {
 
 };
 
+const displayResults = () => {
+
+    $resultsJediWins.text(`Jedi ${counter.crossWins} :`);
+    $resultsSithWins.text(`${counter.circleWins} Sith`);
+    $resultsPlayerWins.text(`Player ${counter.playerWins} :`);
+    $resultsComputerWins.text(`${counter.computerWins} Computer`)
+
+};
+
 
 // ************** EVENT LISTENERS ****************** //
 
@@ -640,6 +681,7 @@ const setInitialDifficulty = difficulty => {
 
     $difficultyScreen.toggleClass("hidden");
     $gameScreen.toggleClass("hidden");
+    $results.toggleClass("hidden");
 
     gameState.difficulty = difficulty;
     prepareGame()
