@@ -74,7 +74,8 @@
   font-style: italic; }
 
 .game-screen {
-  display: block; }
+  display: block;
+  margin-bottom: 20px; }
 
 .game-screen_status {
   margin-bottom: 20px;
@@ -174,6 +175,28 @@
   text-align: center;
   text-transform: uppercase; }
 
+.results {
+  display: block;
+  margin: 0 auto; }
+
+.results_game-counter {
+  margin-bottom: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 30px;
+  color: #FFE81F;
+  text-align: center; }
+
+.results_container {
+  margin-bottom: 5px;
+  text-align: center; }
+
+.results_container_text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  color: #FFE81F;
+  text-align: center;
+  font-weight: bolder; }
+
 @media screen and (min-width: 576px) {
   .header_title {
     font-size: 80px; }
@@ -201,7 +224,13 @@
     left: 110px;
     max-width: 250px;
     border-width: 3px;
-    border-radius: 15px; } }
+    border-radius: 15px; }
+
+  .results_game-counter {
+    font-size: 40px; }
+
+  .results_container_text {
+    font-size: 25px; } }
 @media screen and (min-width: 768px) {
   .game-screen_board {
     width: 600px; }

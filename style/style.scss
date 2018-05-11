@@ -102,6 +102,7 @@ $normal-font: 'Montserrat', sans-serif;
 
 .game-screen {
   display: block;
+  margin-bottom: 20px;
 }
 
 .game-screen_status {
@@ -204,6 +205,28 @@ $normal-font: 'Montserrat', sans-serif;
   text-transform: uppercase;
 }
 
+//************ RESULTS ************
+
+.results {
+  display: block;
+  margin: 0 auto;
+}
+
+.results_game-counter {
+  margin-bottom: 10px;
+  @include text($normal-font, 30px, $sw-title-yellow);
+}
+
+.results_container {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.results_container_text {
+  @include text($normal-font, 20px, $sw-title-yellow);
+  font-weight: bolder;
+}
+
 //************ TABLET & DESKTOP RESOLUTION ************
 
 @media screen and (min-width: 576px) {
@@ -241,6 +264,14 @@ $normal-font: 'Montserrat', sans-serif;
     max-width: 250px;
     border-width: 3px;
     border-radius: 15px;
+  }
+
+  .results_game-counter {
+    font-size: 40px;
+  }
+
+  .results_container_text {
+    font-size: 25px;
   }
 
 }
