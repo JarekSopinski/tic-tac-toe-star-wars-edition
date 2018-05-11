@@ -57,8 +57,8 @@ $normal-font: 'Montserrat', sans-serif;
 .settings {
   display: block;
   max-width: 300px;
-  margin: 0 auto 20px auto;
-  padding: 20px;
+  margin: 0 auto 40px auto;
+  padding: 20px 20px 0 20px;
   background-color: $grey-opacity;
   border: 5px solid $sw-title-yellow;
   border-radius: 20px;
@@ -209,7 +209,7 @@ $normal-font: 'Montserrat', sans-serif;
 
 .results {
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 40px auto;
 }
 
 .results_game-counter {
@@ -225,6 +225,26 @@ $normal-font: 'Montserrat', sans-serif;
 .results_container_text {
   @include text($normal-font, 20px, $sw-title-yellow);
   font-weight: bolder;
+}
+
+//************ FOOTER ************
+
+.footer {
+  text-align: center;
+}
+
+.footer_text {
+  @include text($normal-font, 16px, $sw-title-yellow);
+}
+
+.footer_text--name {
+  @include text($normal-font, 16px, $highlight-orange);
+  text-decoration: none;
+  font-style: italic;
+}
+
+.footer_text--name:hover {
+  color: $ligth-side-blue;
 }
 
 //************ TABLET & DESKTOP RESOLUTION ************
