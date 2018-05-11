@@ -77,7 +77,8 @@
   display: block; }
 
 .game-screen_status {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  min-height: 60px; }
 
 .status_text--quote {
   margin-bottom: 5px;
@@ -193,7 +194,14 @@
     width: 154.66667px;
     height: 154.66667px;
     margin: 3px;
-    border-width: 3px; } }
+    border-width: 3px; }
+
+  .end-popup {
+    top: -50px;
+    left: 110px;
+    max-width: 250px;
+    border-width: 3px;
+    border-radius: 15px; } }
 @media screen and (min-width: 768px) {
   .game-screen_board {
     width: 600px; }
@@ -202,6 +210,22 @@
     width: 180px;
     height: 180px;
     margin: 5px;
-    border-width: 5px; } }
+    border-width: 5px; }
+
+  .end-popup {
+    top: 20px;
+    left: 60px;
+    min-width: 400px;
+    border-width: 5px;
+    border-radius: 20px; }
+
+  .end-popup_title {
+    font-size: 30px; }
+
+  .end-popup_button_text {
+    font-size: 18px; }
+
+  .end-popup_middle-text {
+    font-size: 21px; } }
 
 /*# sourceMappingURL=style.css.map */

@@ -106,6 +106,7 @@ $normal-font: 'Montserrat', sans-serif;
 
 .game-screen_status {
   margin-bottom: 20px;
+  min-height: 60px;
 }
 
 .status_text--quote {
@@ -234,6 +235,14 @@ $normal-font: 'Montserrat', sans-serif;
     border-width: 3px;
   }
 
+  .end-popup {
+    top: -50px;
+    left: 110px;
+    max-width: 250px;
+    border-width: 3px;
+    border-radius: 15px;
+  }
+
 }
 
 @media screen and (min-width: 768px) {
@@ -247,6 +256,26 @@ $normal-font: 'Montserrat', sans-serif;
     height: (600px / 3) - 20px;
     margin: 5px;
     border-width: 5px;
+  }
+
+  .end-popup {
+    top: 20px;
+    left: 60px;
+    min-width: 400px;
+    border-width: 5px;
+    border-radius: 20px;
+  }
+
+  .end-popup_title {
+    font-size: 30px;
+  }
+
+  .end-popup_button_text {
+    font-size: 18px;
+  }
+
+  .end-popup_middle-text {
+    font-size: 21px;
   }
 
 }
