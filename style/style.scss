@@ -1,4 +1,5 @@
 // This stylesheet is written according to BEM convention.
+// Style for mobile (<576px) is default.
 
 // COLORS:
 
@@ -101,31 +102,35 @@ $normal-font: 'Montserrat', sans-serif;
 
 .game-screen {
   display: block;
-  max-width: 600px;
-  margin: 40px auto 0 auto;
+}
+
+.game-screen_status {
+  margin-bottom: 20px;
 }
 
 .status_text--quote {
   margin-bottom: 5px;
-  @include text($normal-font, 25px, $sw-title-yellow);
+  @include text($normal-font, 20px, $sw-title-yellow);
   font-weight: bolder;
   font-style: italic;
 }
 
 .status_text--hint {
-  @include text($normal-font, 20px, $sw-title-yellow);
+  @include text($normal-font, 18px, $sw-title-yellow);
 }
 
 .game-screen_board {
-  margin: 40px 0;
+  display: block;
+  margin: auto;
+  width: 300px;
 }
 
 .board_row_field {
   display: inline-block;
-  width: 31%;
-  height: 200px;
-  margin: 5px;
-  border: 5px solid $sw-title-yellow;
+  width: (300px / 3) - 8px;
+  height: (300px / 3) - 8px;
+  margin: 2px;
+  border: 2px solid $sw-title-yellow;
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -189,16 +194,50 @@ $normal-font: 'Montserrat', sans-serif;
   text-transform: uppercase;
 }
 
-//************ MEDIA QUERIES ************
+//************ TABLET & DESKTOP RESOLUTION ************
 
 @media screen and (min-width: 576px) {
 
   .header_title {
-    @include text($title-font, 80px, $sw-title-yellow);
+    font-size: 80px;
   }
 
   .header_title--subtitle {
-    @include  text($title-font, 40px, $sw-title-yellow);
+    font-size: 40px;
+  }
+
+  .status_text--quote {
+    font-size: 25px;
+  }
+
+  .status_text--hint {
+    font-size: 20px;
+  }
+
+  .game-screen_board {
+    width: 500px;
+  }
+
+  .board_row_field {
+    width: (500px / 3) - 12px;
+    height: (500px / 3) - 12px;
+    margin: 3px;
+    border-width: 3px;
+  }
+
+}
+
+@media screen and (min-width: 768px) {
+
+  .game-screen_board {
+    width: 600px;
+  }
+
+  .board_row_field {
+    width: (600px / 3) - 20px;
+    height: (600px / 3) - 20px;
+    margin: 5px;
+    border-width: 5px;
   }
 
 }
