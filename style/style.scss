@@ -34,14 +34,15 @@ $normal-font: 'Montserrat', sans-serif;
 
 .body {
   background-image: url("../img/stars-bg.jpg");
+  padding: 20px;
 }
 
 .header {
-  margin: 20px auto 0 auto;
+  margin: 0 auto 40px auto;
 }
 
 .header_title {
-  @include text($title-font, 50px, $sw-title-yellow);
+  @include text($title-font, 45px, $sw-title-yellow);
   text-transform: uppercase;
 }
 
@@ -50,20 +51,20 @@ $normal-font: 'Montserrat', sans-serif;
   text-transform: uppercase;
 }
 
-//***** SETTINGS (SIDE & DIFFICULTY) *****
+//***** SETTINGS (SIGN & DIFFICULTY) *****
 
 .settings {
   display: block;
   max-width: 300px;
-  margin: 40px auto 0 auto;
-  padding: 0 20px;
+  margin: 0 auto 20px auto;
+  padding: 20px;
   background-color: $grey-opacity;
   border: 5px solid $sw-title-yellow;
   border-radius: 20px;
 }
 
 .settings_title {
-  margin-top: 20px;
+  margin-bottom: 20px;
   @include text($normal-font, 25px, $sw-title-yellow);
   font-weight: bolder;
 }
@@ -74,7 +75,7 @@ $normal-font: 'Montserrat', sans-serif;
 
 .settings_container_img {
   display: block;
-  margin: auto;
+  margin: 0 auto 10px auto;
   width: 200px;
   height: 200px;
   border: 5px solid $sw-title-yellow;
@@ -87,12 +88,12 @@ $normal-font: 'Montserrat', sans-serif;
 }
 
 .settings_container_quote {
-  margin-top: 10px;
-  @include text($normal-font, 15px, $sw-title-yellow);
+  @include text($normal-font, 20px, $sw-title-yellow);
+  margin-bottom: 5px;
 }
 
 .settings_container_hint {
-  @include text($normal-font, 13px, $sw-title-yellow);
+  @include text($normal-font, 15px, $sw-title-yellow);
   font-style: italic;
 }
 
